@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AGVGUI/AGVGUI.iml" filepath="$PROJECT_DIR$/AGVGUI/AGVGUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/APIHandler/APIHandler.iml" filepath="$PROJECT_DIR$/APIHandler/APIHandler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Core/Core.iml" filepath="$PROJECT_DIR$/Core/Core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InstructionSequence/InstructionSequence.iml" filepath="$PROJECT_DIR$/InstructionSequence/InstructionSequence.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StorageGUI/StorageGUI.iml" filepath="$PROJECT_DIR$/StorageGUI/StorageGUI.iml" />
+    </modules>
+  </component>
+</project>
