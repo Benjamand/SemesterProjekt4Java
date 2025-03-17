@@ -107,5 +107,7 @@
     <module>Core</module>
     <module>StorageGUI</module>
     <module>AGVGUI</module>
+    <module>InstructionSequence</module>
+    <module>APIHandler</module>
   </modules>
 </project>
