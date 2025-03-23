@@ -16,4 +16,4 @@ Kig på lektioner om module info og eksempelprojekter i Komponentbaseret for at 
 
 Lav jeres interfaces først for at etablere kontrakterne så andre kan bruge dem. Husk at kommunikere med hinanden under processen.
 
-Husk også at bruge TDD undervejs.
+Husk også at bruge TDD undervejs. Lav tests før i laver andet kode.
