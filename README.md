@@ -15,3 +15,5 @@ Brug derefter denne kommando for at køre programmet: "java --module-path mods-m
 Kig på lektioner om module info og eksempelprojekter i Komponentbaseret for at forstå hvordan man forbinder det hele sammen
 
 Lav jeres interfaces først for at etablere kontrakterne så andre kan bruge dem. Husk at kommunikere med hinanden under processen.
+
+Husk også at bruge TDD undervejs.
