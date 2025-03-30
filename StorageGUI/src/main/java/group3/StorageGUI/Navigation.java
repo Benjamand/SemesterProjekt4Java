@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+
 public class Navigation extends Application {
 
     @Override
@@ -13,26 +15,30 @@ public class Navigation extends Application {
         primaryStage.setTitle("Storage Navigation");
 
 
-        Button storageExampleButton = new Button("Storage Example");
+        Button storagePageButton = new Button("Storage Page");
         Button knapButton = new Button("Knap");
         Button exitButton = new Button("Exit");
 
 
-        storageExampleButton.setOnAction(e -> openStorageExample(primaryStage));
+        storagePageButton.setOnAction(e -> {
+            StoragePage storagePage = new StoragePage();
+            Stage storageStage = new Stage();
+            try {
+                storagePage.start(storageStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
         exitButton.setOnAction(e -> primaryStage.close());
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(storageExampleButton, knapButton, exitButton);
+        layout.getChildren().addAll(storagePageButton, knapButton, exitButton);
 
 
         Scene scene = new Scene(layout, 500, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    private void openStorageExample(Stage stage) {
-        StorageEksempel storagePage = new StorageEksempel();
-        stage.setScene(storagePage.getScene(stage, this));
     }
 
     public static void main(String[] args) {

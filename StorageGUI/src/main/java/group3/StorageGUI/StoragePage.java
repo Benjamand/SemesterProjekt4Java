@@ -1,70 +1,67 @@
 package group3.StorageGUI;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import javafx.application.Application;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class StoragePage {
-    private JFrame frame;
-    private JTable warehouseTable;
-    private JTable assemblerTable;
-    private Map<String, Object[][]> tableData; // Data holder for tables
+public class StoragePage extends Application {
 
-    public StoragePage() {
-        tableData = new HashMap<>();
-        initializeUI();
-        fetchAndUpdateData();
+    private TableView<Item> warehouseTable = new TableView<>();
+    private TableView<Item> assemblerTable = new TableView<>();
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Storage Page");
+
+        // Initialize tables
+        setupTable(warehouseTable);
+        setupTable(assemblerTable);
+
+        // Load data into tables
+        warehouseTable.setItems(getSampleWarehouseData());
+        assemblerTable.setItems(getSampleAssemblerData());
+
+        // Layout
+        VBox layout = new VBox(20, warehouseTable, assemblerTable);
+        Scene scene = new Scene(layout, 600, 400);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
-    private void initializeUI() {
-        frame = new JFrame("Storage Page");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
-        frame.setLayout(new GridLayout(2, 1));
+    private void setupTable(TableView<Item> table) {
+        TableColumn<Item, Integer> idColumn = new TableColumn<>("ID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        // Initialize tables with empty models
-        warehouseTable = new JTable(new DefaultTableModel(new Object[]{"ID", "Content"}, 0));
-        assemblerTable = new JTable(new DefaultTableModel(new Object[]{"ID", "Content"}, 0));
+        TableColumn<Item, String> contentColumn = new TableColumn<>("Content");
+        contentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
 
-        frame.add(createTablePanel("Warehouse Table", warehouseTable));
-        frame.add(createTablePanel("Assembler Table", assemblerTable));
-
-        frame.setVisible(true);
+        table.getColumns().addAll(idColumn, contentColumn);
     }
 
-    private JPanel createTablePanel(String title, JTable table) {
-        JPanel panel = new JPanel(new BorderLayout());
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(BorderFactory.createTitledBorder(title));
-        panel.add(scrollPane, BorderLayout.CENTER);
-        return panel;
+    private ObservableList<Item> getSampleWarehouseData() {
+        return FXCollections.observableArrayList(
+                new Item(1, "Item A"),
+                new Item(2, "Item B")
+        );
     }
 
-    private void fetchAndUpdateData() {
-        // Test for input ad data
-        Object[][] warehouseData = { {1, "Item A"}, {2, "Item B"} };
-        Object[][] assemblerData = { {3, "Item C"}, {4, "Item D"} };
-
-        tableData.put("Warehouse Table", warehouseData);
-        tableData.put("Assembler Table", assemblerData);
-
-        updateTable(warehouseTable, warehouseData);
-        updateTable(assemblerTable, assemblerData);
-    }
-
-    private void updateTable(JTable table, Object[][] data) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0); // Clear existing rows
-
-        for (Object[] row : data) {
-            model.addRow(row);
-        }
+    private ObservableList<Item> getSampleAssemblerData() {
+        return FXCollections.observableArrayList(
+                new Item(3, "Item C"),
+                new Item(4, "Item D")
+        );
     }
 
     public static void main(String[] args) {
-        // new StoragePage();
-        SwingUtilities.invokeLater(StoragePage::new);
+        launch(args);
     }
 }
