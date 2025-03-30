@@ -1,4 +1,5 @@
 module StorageGUI {
      requires Core;
-     exports group3.StorageGUI;
+    requires java.desktop;
+    exports group3.StorageGUI;
 }
