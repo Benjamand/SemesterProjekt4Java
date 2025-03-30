@@ -1,6 +1,7 @@
 package group3.apihandler;
 
 import java.util.List;
+import java.util.Map;
 
 public class Warehouse {
     List<Item> items;
@@ -14,5 +15,13 @@ public class Warehouse {
     @Override
     public String toString() {
         return "Items: " + items.size() + ", State: " + state;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public int getState() {
+        return state;
     }
 }

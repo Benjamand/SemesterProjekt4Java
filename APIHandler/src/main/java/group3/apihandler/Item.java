@@ -13,4 +13,12 @@ public class Item {
     public String toString() {
         return "[ID: " + id + ", Content: " + content + "]";
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getId() {
+        return id;
+    }
 }

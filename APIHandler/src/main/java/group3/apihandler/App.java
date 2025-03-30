@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,13 +23,12 @@ public class App implements APIHandler {
     }
 
     public Warehouse getWarehouseInfo() throws IOException {
-        URL url = new URL(baseUrl +"/warehouse/getinventory");
+        URL url = new URL(baseUrl + "/warehouse/getinventory");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
 
-        List<Item> items = new ArrayList<>();
-        int warehouseState = -1;
+        Warehouse warehouse = null;
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -40,23 +40,29 @@ public class App implements APIHandler {
             }
             in.close();
 
-            Gson gson = new Gson();
-            JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
-
-            JsonArray jsonArray = jsonObject.get("Items").getAsJsonArray();
-
-            for (JsonElement jsonElement : jsonArray) {
-                JsonObject item = jsonElement.getAsJsonObject();
-                String id = item.get("Id").getAsString();
-                String content = item.get("Content").getAsString();
-                items.add(new Item(id, content));
-            }
-
-            warehouseState = jsonObject.get("State").getAsInt();
+            warehouse = getWarehouseFromString(response.toString());
         }
 
-        Warehouse warehouse = new Warehouse(items, warehouseState);
         return warehouse;
+    }
+
+    public Warehouse getWarehouseFromString(String response) {
+        List<Item> items = new ArrayList<>();
+        int warehouseState = -1;
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
+
+        JsonArray jsonArray = jsonObject.get("Items").getAsJsonArray();
+
+        for (JsonElement jsonElement : jsonArray) {
+            JsonObject item = jsonElement.getAsJsonObject();
+            String id = item.get("Id").getAsString();
+            String content = item.get("Content").getAsString();
+            items.add(new Item(id, content));
+        }
+
+        warehouseState = jsonObject.get("State").getAsInt();
+        return new Warehouse(items, warehouseState);
     }
 
 }

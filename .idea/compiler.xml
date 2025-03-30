@@ -7,8 +7,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="AGVGUI" />
-        <module name="Core" />
+        <module name="APIHandler" />
         <module name="StorageGUI" />
+        <module name="Core" />
       </profile>
     </annotationProcessing>
   </component>
