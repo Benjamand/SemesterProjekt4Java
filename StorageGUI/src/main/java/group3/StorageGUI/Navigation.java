@@ -16,6 +16,7 @@ public class Navigation extends Application {
 
 
         Button storagePageButton = new Button("Storage Page");
+        Button agvPageButton = new Button("Agv Page");
         Button knapButton = new Button("Knap");
         Button exitButton = new Button("Exit");
 
@@ -30,10 +31,20 @@ public class Navigation extends Application {
             }
         });
 
+        agvPageButton.setOnAction(e -> {
+            AGVPage agvPage = new AGVPage();
+            Stage agvStage = new Stage();
+            try {
+                agvPage.start(agvStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
         exitButton.setOnAction(e -> primaryStage.close());
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(storagePageButton, knapButton, exitButton);
+        layout.getChildren().addAll(storagePageButton, agvPageButton, knapButton, exitButton);
 
 
         Scene scene = new Scene(layout, 500, 500);

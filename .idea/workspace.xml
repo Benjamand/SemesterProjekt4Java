@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9799a056-8630-4e42-8fa1-b40d6d9b4072" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/AGVPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/Navigation.java" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/Navigation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/StorageEksempel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/StoragePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/StoragePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StorageGUI/target/classes/group3/StorageGUI/Navigation.class" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/target/classes/group3/StorageGUI/Navigation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StorageGUI/target/classes/group3/StorageGUI/StoragePage.class" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/target/classes/group3/StorageGUI/StoragePage.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
