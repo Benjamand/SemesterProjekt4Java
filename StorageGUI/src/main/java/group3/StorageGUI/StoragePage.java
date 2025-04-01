@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -29,8 +30,22 @@ public class StoragePage extends Application {
         warehouseTable.setItems(getSampleWarehouseData());
         assemblerTable.setItems(getSampleAssemblerData());
 
+        // Labels for tables
+        Label titleLabel = new Label("Storage Page");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 25px;");
+        titleLabel.setMaxWidth(Double.MAX_VALUE);
+        titleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+        Label subtitleLabel = new Label("Warehouse and Assembler info");
+        subtitleLabel.setStyle("-fx-font-weight: bold;");
+        subtitleLabel.setMaxWidth(Double.MAX_VALUE);
+        subtitleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+        Label warehouseLabel = new Label("Warehouse");
+        warehouseLabel.setStyle("-fx-font-weight: bold;");
+        Label assemblerLabel = new Label("Assembler");
+        assemblerLabel.setStyle("-fx-font-weight: bold;");
+
         // Layout
-        VBox layout = new VBox(20, warehouseTable, assemblerTable);
+        VBox layout = new VBox(10, titleLabel, subtitleLabel, warehouseLabel, warehouseTable, assemblerLabel, assemblerTable);
         Scene scene = new Scene(layout, 600, 400);
 
         primaryStage.setScene(scene);
