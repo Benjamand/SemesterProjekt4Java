@@ -1,12 +1,11 @@
 package group3.StorageGUI;
 
+import group3.AGVGUI.AGVPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 
 public class Navigation extends Application {
 

@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9799a056-8630-4e42-8fa1-b40d6d9b4072" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/AGVPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/AGVPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/src/main/java/group3/AGVGUI/AGVPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/Navigation.java" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/Navigation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
