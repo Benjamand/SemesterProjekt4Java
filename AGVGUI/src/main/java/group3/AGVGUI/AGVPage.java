@@ -1,4 +1,4 @@
-package group3.StorageGUI;
+package group3.AGVGUI;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,9 +20,21 @@ public class AGVPage extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        //OnAction test
+        startProductionButton.setOnAction(e -> {
+            System.out.println("Production started");
+        });
+
+        //OnAction test
+        stopProductionButton.setOnAction(e -> {
+            System.out.println("Production stopped");
+        });
     }
 
+
+
     public static void main(String[] args) {
-        launch(args);
+        Application.launch(args);
     }
 }
