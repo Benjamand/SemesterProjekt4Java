@@ -1,11 +1,13 @@
 package group3.StorageGUI;
 
+import group3.component.common.services.IGUIProcessingService;
 import javafx.application.Application;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -13,7 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class StoragePage extends Application {
+public class StoragePage extends Application implements IGUIProcessingService {
 
     private TableView<Item> warehouseTable = new TableView<>();
     private TableView<Item> assemblerTable = new TableView<>();
@@ -78,5 +80,15 @@ public class StoragePage extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void initialize(Stage stage) {
+        start(stage);
+    }
+
+    @Override
+    public Button getButton() {
+        return new Button("Storage Page");
     }
 }

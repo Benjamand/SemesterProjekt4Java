@@ -4,7 +4,59 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9799a056-8630-4e42-8fa1-b40d6d9b4072" name="Changes" comment="" />
+    <list default="true" id="9799a056-8630-4e42-8fa1-b40d6d9b4072" name="Changes" comment="ServiceLoader first draft">
+      <change afterPath="$PROJECT_DIR$/CommonAPI/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CommonInstructionSequence/CommonInstructionSequence.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mods-mvn/javafx-base-21.0.2-win.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mods-mvn/javafx-base-21.0.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mods-mvn/javafx-controls-21.0.2-win.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mods-mvn/javafx-controls-21.0.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mods-mvn/javafx-graphics-21.0.2-win.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mods-mvn/javafx-graphics-21.0.2.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/src/main/java/group3/AGVGUI/AGVPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/src/main/java/group3/AGVGUI/AGVPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/target/AGVGUI-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/target/AGVGUI-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/target/classes/group3/AGVGUI/AGVPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/target/classes/group3/AGVGUI/AGVPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/target/classes/group3/AGVGUI/App.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGVGUI/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/AGVGUI/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIHandler/target/APIHandler-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/APIHandler/target/APIHandler-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/src/main/java/group3/component/common/services/IGUIProcessingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/main/java/group3/component/common/services/IGUIProcessingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/src/main/java/group3/component/common/services/IInstructionAPIProcessingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/CommonAPI/src/main/java/group3/component/common/API/IInstructionAPIProcessingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/src/main/java/group3/component/common/services/IInstructionSequenceProcessingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/CommonInstructionSequence/src/main/java/group3/component/common/InstructionSequence/IInstructionSequenceProcessingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/src/main/java/group3/component/common/services/IWarehouseAPIProcessingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/CommonAPI/src/main/java/group3/component/common/API/IWarehouseAPIProcessingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/Core/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/target/Core-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Core/target/Core-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/Core/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/Core/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/Core/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InstructionSequence/target/InstructionSequence-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/InstructionSequence/target/InstructionSequence-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/Navigation.java" beforeDir="false" afterPath="$PROJECT_DIR$/Core/src/main/java/group3/component/Navigation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/StoragePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/src/main/java/group3/StorageGUI/StoragePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/target/StorageGUI-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/target/StorageGUI-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/target/classes/group3/StorageGUI/Navigation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/target/classes/group3/StorageGUI/StoragePage.class" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/target/classes/group3/StorageGUI/StoragePage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageGUI/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/StorageGUI/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mods-mvn/AGVGUI-1.0-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mods-mvn/APIHandler-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/mods-mvn/APIHandler-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mods-mvn/Core-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/mods-mvn/Core-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mods-mvn/InstructionSequence-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/mods-mvn/InstructionSequence-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mods-mvn/StorageGUI-1.0-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +69,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
+        <option value="module-info" />
       </list>
     </option>
   </component>
@@ -28,6 +82,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Benjamand"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Benjamand/SemesterProjekt4Java.git",
+    "accountId": "9013166a-4f01-40d3-98e8-54466a945445"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
     &quot;associatedIndex&quot;: 3
     }</component>
@@ -41,9 +107,16 @@
     "Application.AGVPage.executor": "Run",
     "Application.Navigation.executor": "Run",
     "Application.StoragePage.executor": "Run",
+    "Maven.AdminApplication [archetype:generate...].executor": "Run",
+    "Maven.AdminApplication [clean,install,-X].executor": "Run",
+    "Maven.AdminApplication [clean,install,-e].executor": "Run",
+    "Maven.AdminApplication [clean,install].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "StorageGUI",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/User/Documents/UniversitetProjekt/4.Semester/SemesterProjekt4Java/SemesterProjekt4Java/mods-mvn",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -52,11 +125,30 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Documents\UniversitetProjekt\4.Semester\SemesterProjekt4Java\SemesterProjekt4Java\mods-mvn" />
+      <recent name="C:\Users\User\Documents\UniversitetProjekt\4.Semester\SemesterProjekt4Java\SemesterProjekt4Java\Common" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Documents\UniversitetProjekt\4.Semester\SemesterProjekt4Java\SemesterProjekt4Java\plugins" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn archetype:generate -DarchetypeGroupId=org.codehaus.mojo.archetypes -DarchetypeArtifactId=pom-root  -DarchetypeVersion=RELEASE " />
+      <command value="-X" />
+      <command value="mvn clean install -X" />
+      <command value="mvn clean install -e" />
+      <command value="mvn clean install" />
+      <command value="java --module-path mods-mvn --class-path &quot;libs /*&quot; --module=Core/group3.component.Navigation" />
+    </option>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
       </set>
     </attachedChunks>
   </component>
@@ -71,10 +163,35 @@
       <workItem from="1743329689290" duration="519000" />
       <workItem from="1743330212482" duration="435000" />
       <workItem from="1743331696435" duration="1033000" />
+      <workItem from="1744098518253" duration="6827000" />
     </task>
+    <task id="LOCAL-00001" summary="ServiceLoader first draft">
+      <option name="closed" value="true" />
+      <created>1744036576025</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1744036576025</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ServiceLoader first draft" />
+    <option name="LAST_COMMIT_MESSAGE" value="ServiceLoader first draft" />
   </component>
 </project>

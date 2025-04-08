@@ -1,12 +1,13 @@
 package group3.AGVGUI;
 
+import group3.component.common.services.IGUIProcessingService;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class AGVPage extends Application {
+public class AGVPage extends Application implements IGUIProcessingService {
 
     @Override
     public void start(Stage primaryStage) {
@@ -34,7 +35,14 @@ public class AGVPage extends Application {
 
 
 
-    public static void main(String[] args) {
-        Application.launch(args);
+
+    @Override
+    public void initialize(Stage stage) {
+        start(stage);
+    }
+
+    @Override
+    public Button getButton() {
+         return new Button("AGV Page");
     }
 }

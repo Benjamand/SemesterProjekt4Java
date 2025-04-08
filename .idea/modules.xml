@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/AGVGUI/AGVGUI.iml" filepath="$PROJECT_DIR$/AGVGUI/AGVGUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/APIHandler/APIHandler.iml" filepath="$PROJECT_DIR$/APIHandler/APIHandler.iml" />
       <module fileurl="file://$PROJECT_DIR$/Common/Common.iml" filepath="$PROJECT_DIR$/Common/Common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CommonAPI/CommonAPI.iml" filepath="$PROJECT_DIR$/CommonAPI/CommonAPI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CommonInstructionSequence/CommonInstructionSequence.iml" filepath="$PROJECT_DIR$/CommonInstructionSequence/CommonInstructionSequence.iml" />
       <module fileurl="file://$PROJECT_DIR$/Core/Core.iml" filepath="$PROJECT_DIR$/Core/Core.iml" />
       <module fileurl="file://$PROJECT_DIR$/InstructionSequence/InstructionSequence.iml" filepath="$PROJECT_DIR$/InstructionSequence/InstructionSequence.iml" />
       <module fileurl="file://$PROJECT_DIR$/StorageGUI/StorageGUI.iml" filepath="$PROJECT_DIR$/StorageGUI/StorageGUI.iml" />

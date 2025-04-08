@@ -8,9 +8,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="AGVGUI" />
         <module name="APIHandler" />
+        <module name="CommonInstructionSequence" />
         <module name="StorageGUI" />
+        <module name="CommonAPI" />
         <module name="InstructionSequence" />
         <module name="Core" />
+        <module name="Common" />
       </profile>
     </annotationProcessing>
   </component>

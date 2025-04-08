@@ -1,8 +1,10 @@
+import group3.component.common.services.IGUIProcessingService;
+
 module StorageGUI {
      requires Core;
     requires javafx.controls;
-    requires java.desktop;
-    requires javafx.graphics;
-    requires AGVGUI;
-    exports group3.StorageGUI;
+
+     requires Common;
+     exports group3.StorageGUI;
+     provides IGUIProcessingService with group3.StorageGUI.StoragePage;
 }

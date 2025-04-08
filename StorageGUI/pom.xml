@@ -23,22 +23,21 @@
             <groupId>group3.component</groupId>
             <artifactId>Core</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
 
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>21</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>21</version>
         </dependency>
         <dependency>
-            <groupId>group3.component</groupId>
-            <artifactId>AGVGUI</artifactId>
+            <groupId>group3.component.common.services</groupId>
+            <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

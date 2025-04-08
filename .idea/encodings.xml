@@ -5,6 +5,12 @@
     <file url="file://$PROJECT_DIR$/AGVGUI/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/APIHandler/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/APIHandler/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/CommonAPI/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/CommonAPI/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/CommonInstructionSequence/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/CommonInstructionSequence/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/InstructionSequence/src/main/java" charset="UTF-8" />

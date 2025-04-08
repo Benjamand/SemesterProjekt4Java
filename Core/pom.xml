@@ -11,4 +11,72 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Core</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>group3.component.common.services</groupId>
+      <artifactId>Common</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>group3.component.common.api</groupId>
+      <artifactId>CommonAPI</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>group3.component.common.InstructionSequence</groupId>
+      <artifactId>CommonInstructionSequence</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <includeArtifactIds>javafx-controls,javafx-graphics,javafx-base</includeArtifactIds>
+              <outputDirectory>../mods-mvn</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.openjfx</groupId>
+                  <artifactId>javafx-controls</artifactId>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>../libs</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
