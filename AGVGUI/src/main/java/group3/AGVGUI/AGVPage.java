@@ -4,14 +4,14 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 public class AGVPage extends Application {
@@ -69,6 +69,101 @@ public class AGVPage extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        // Drag-and-drop
+        instructionList.setOnDragDetected(event -> {
+            String selected = instructionList.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                Dragboard db = instructionList.startDragAndDrop(TransferMode.COPY);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(selected);
+                db.setContent(content);
+                event.consume();
+            }
+        });
+
+        // reordering
+        instructionQueue.setOnDragDetected(event -> {
+            String selected = instructionQueue.getSelectionModel().getSelectedItem();
+            if (selected != null && !isRunning[0]) {
+                Dragboard db = instructionQueue.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(selected);
+                db.setContent(content);
+                event.consume();
+            }
+        });
+
+        // Handle drops outside of any specific cell (e.g. at the bottom)
+        instructionQueue.setOnDragOver(event -> {
+            if (!isRunning[0] && event.getGestureSource() != instructionQueue && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.COPY);
+            }
+            event.consume();
+        });
+
+        instructionQueue.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasString() && !isRunning[0] && event.getGestureSource() != instructionQueue) {
+                queue.add(db.getString());
+                System.out.println("Instruction added via drag-and-drop (bottom): " + db.getString());
+                event.setDropCompleted(true);
+            } else {
+                event.setDropCompleted(false);
+            }
+            event.consume();
+        });
+
+        
+        instructionQueue.setCellFactory(new Callback<>() {
+            @Override
+            public ListCell<String> call(ListView<String> listView) {
+                ListCell<String> cell = new ListCell<>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setText(empty || item == null ? null : item);
+                    }
+                };
+
+                cell.setOnDragOver(event -> {
+                    if (!isRunning[0] && event.getGestureSource() != cell && event.getDragboard().hasString()) {
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+                    event.consume();
+                });
+
+                cell.setOnDragDropped(event -> {
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+
+                    if (db.hasString() && !isRunning[0]) {
+                        String draggedItem = db.getString();
+                        int dropIndex = cell.getIndex();
+
+                        if (event.getGestureSource() == instructionList) {
+                            queue.add(dropIndex, draggedItem);
+                            System.out.println("Instruction added via drag-and-drop: " + draggedItem);
+                        } else if (event.getGestureSource() == instructionQueue) {
+                            int draggedIndex = queue.indexOf(draggedItem);
+                            if (draggedIndex != -1 && draggedIndex != dropIndex) {
+                                queue.remove(draggedIndex);
+                                if (dropIndex > draggedIndex) dropIndex--;
+                                queue.add(dropIndex, draggedItem);
+                                System.out.println("Instruction reordered via drag-and-drop: " + draggedItem);
+                            }
+                        }
+
+                        success = true;
+                    }
+
+                    event.setDropCompleted(success);
+                    event.consume();
+                });
+
+                return cell;
+            }
+        });
+
         // Button Logic
         startProductionButton.setOnAction(e -> {
             if (queue.isEmpty()) {
@@ -84,7 +179,6 @@ public class AGVPage extends Application {
             System.out.println("Production started");
             isRunning[0] = true;
 
-            // Disable the start, add, remove, clear while running
             startProductionButton.setDisable(true);
             addInstructionSequenceButton.setDisable(true);
             removeInstructionSequenceButton.setDisable(true);
@@ -95,7 +189,6 @@ public class AGVPage extends Application {
                     String instruction = queue.get(currentIndex[0]);
                     System.out.println("Executing instruction: " + instruction);
                     currentInstructionLabel.setText("Current Instruction: " + instruction);
-
                     currentIndex[0] = (currentIndex[0] + 1) % queue.size();
                 } else {
                     System.out.println("Queue is unexpectedly empty.");
@@ -111,7 +204,6 @@ public class AGVPage extends Application {
                 productionTimeline[0].stop();
                 System.out.println("Production stopped manually.");
                 isRunning[0] = false;
-
 
                 startProductionButton.setDisable(false);
                 addInstructionSequenceButton.setDisable(false);
