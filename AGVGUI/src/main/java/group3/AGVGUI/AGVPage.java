@@ -25,7 +25,7 @@ public class AGVPage extends Application {
         Button stopProductionButton = new Button("Stop Production");
         Button addInstructionSequenceButton = new Button("Add Instruction");
         Button removeInstructionSequenceButton = new Button("Remove Instruction");
-        Button ClearInstructionQueue = new Button("Clear Instruction Queue");
+        Button ClearInstructionQueueButton = new Button("Clear Instruction Queue");
 
         // Instruction list
         ObservableList<String> instructionsAGV = FXCollections.observableArrayList("work", "go to", "eat", "sleep");
@@ -59,7 +59,7 @@ public class AGVPage extends Application {
         // Layouts
         VBox labelBox = new VBox(10, titleLabel, subtitleLabel);
         HBox buttonsBox = new HBox(20, startProductionButton, stopProductionButton);
-        HBox buttonHBox = new HBox(20, addInstructionSequenceButton, removeInstructionSequenceButton, ClearInstructionQueue);
+        HBox buttonHBox = new HBox(20, addInstructionSequenceButton, removeInstructionSequenceButton, ClearInstructionQueueButton);
         VBox listbox = new VBox(5, InstructionList, instructionList);
         VBox queuebox = new VBox(5, InstructionQueue, instructionQueue);
         HBox listsBox = new HBox(20, listbox, queuebox);
@@ -88,7 +88,7 @@ public class AGVPage extends Application {
             startProductionButton.setDisable(true);
             addInstructionSequenceButton.setDisable(true);
             removeInstructionSequenceButton.setDisable(true);
-            ClearInstructionQueue.setDisable(true);
+            ClearInstructionQueueButton.setDisable(true);
 
             productionTimeline[0] = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
                 if (!queue.isEmpty()) {
@@ -116,11 +116,11 @@ public class AGVPage extends Application {
                 startProductionButton.setDisable(false);
                 addInstructionSequenceButton.setDisable(false);
                 removeInstructionSequenceButton.setDisable(false);
-                ClearInstructionQueue.setDisable(false);
+                ClearInstructionQueueButton.setDisable(false);
             }
         });
 
-        ClearInstructionQueue.setOnAction(e -> {
+        ClearInstructionQueueButton.setOnAction(e -> {
             queue.clear(); // Clears the queue
             System.out.println("Queue cleared.");
             currentInstructionLabel.setText("Current Instruction: None");
