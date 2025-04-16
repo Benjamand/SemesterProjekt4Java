@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,7 +19,71 @@ public class App implements APIHandler {
 
     public static void main(String[] args) throws IOException {
         App appInstance = new App();
-        appInstance.getWarehouseInfo();
+        //System.out.println(appInstance.getWarehouseInfo());
+        System.out.println(appInstance.pickWarehouseItem("3"));
+        //System.out.println(appInstance.insertWarehouseItem("1337", "Stuff"));
+        //System.out.println(appInstance.commandAGV("move", "assembly"));
+    }
+
+    public String commandAGV(String command, String location) throws IOException {
+        URL url = new URL(baseUrl + "/agv/");
+
+        String body = "{\"command\": " + "\"" + command + "\", \"location\":" + "\"" + location + "\"}";
+
+        return getString(url, body);
+    }
+
+    public String pickWarehouseItem(String id) throws IOException {
+        URL url = new URL(baseUrl + "/warehouse/pick");
+
+        String body = "{\"id\":" + "\"" + id + "\"}";
+
+        return getString(url, body);
+    }
+
+    public String insertWarehouseItem(String id, String name) throws IOException {
+        URL url = new URL(baseUrl + "/warehouse/insert");
+
+        String body = "{\"id\": " + "\"" + id + "\", \"name\":" + "\"" + name + "\"}";
+
+        return getString(url, body);
+    }
+
+    private String getString(URL url, String body) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+
+        connection.setDoOutput(true);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = body.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        if (connection.getResponseCode() != 200) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
+                StringBuilder response = new StringBuilder();
+                String inputLine;
+                while ((inputLine = br.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                connection.disconnect();
+                return response.toString();
+            }
+        }
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = br.readLine()) != null) {
+                response.append(inputLine);
+            }
+            connection.disconnect();
+            return response.toString();
+        }
     }
 
     public Warehouse getWarehouseInfo() throws IOException {
@@ -48,7 +112,6 @@ public class App implements APIHandler {
 
     public Warehouse getWarehouseFromString(String response) {
         List<Item> items = new ArrayList<>();
-        int warehouseState = -1;
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
 
@@ -61,7 +124,7 @@ public class App implements APIHandler {
             items.add(new Item(id, content));
         }
 
-        warehouseState = jsonObject.get("State").getAsInt();
+        int warehouseState = jsonObject.get("State").getAsInt();
         return new Warehouse(items, warehouseState);
     }
 
