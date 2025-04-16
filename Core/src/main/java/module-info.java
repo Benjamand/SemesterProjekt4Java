@@ -7,5 +7,6 @@ module Core {
      requires Common;
      requires CommonInstructionSequence;
      requires CommonAPI;
+     requires spring.context;
      exports group3.component;
 }
