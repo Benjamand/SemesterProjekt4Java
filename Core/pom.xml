@@ -59,7 +59,7 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <includeArtifactIds>javafx-controls,javafx-graphics,javafx-base</includeArtifactIds>
+              <includeArtifactIds>spring-context,spring-core,spring-beans,spring-aop,spring-boot,javafx-controls,javafx-graphics,javafx-base</includeArtifactIds>
               <outputDirectory>../mods-mvn</outputDirectory>
             </configuration>
           </execution>
