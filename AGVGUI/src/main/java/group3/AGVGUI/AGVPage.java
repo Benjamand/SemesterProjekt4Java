@@ -2,33 +2,25 @@ package group3.AGVGUI;
 
 import group3.component.common.services.IGUIProcessingService;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
 import javafx.scene.control.*;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.util.Callback;
-import javafx.util.Duration;
+import group3.Instruction.InstructionSequence;
+
+
+
 
 public class AGVPage extends Application implements IGUIProcessingService {
+
+     private final InstructionSequence instructionSequence = new InstructionSequence();
 
      @Override
      public void start(Stage primaryStage) {
@@ -42,22 +34,16 @@ public class AGVPage extends Application implements IGUIProcessingService {
           Button ClearInstructionQueueButton = new Button("Clear Instruction Queue");
 
           // Instruction list
-          ObservableList<String> instructionsAGV = FXCollections.observableArrayList("work", "go to", "eat", "sleep");
+          ObservableList<String> instructionsAGV = FXCollections.observableArrayList("Storage", "Assembly station", "Pick up", "Put down");
           ListView<String> instructionList = new ListView<>(instructionsAGV);
-          ObservableList<String> queue = FXCollections.observableArrayList();
-          ListView<String> instructionQueue = new ListView<>(queue);
-          final Timeline[] productionTimeline = new Timeline[1];
-
-          // instruction index
-          final int[] currentIndex = {0};
-
-          final boolean[] isRunning = {false};
+          ListView<String> instructionQueue = new ListView<>(instructionSequence.getQueue());
 
           // Labels
-          Label titleLabel = new Label("Ond cirkel \uD83D\uDE08");
+          Label titleLabel = new Label("AGV Page");
           titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 25px;");
           titleLabel.setMaxWidth(Double.MAX_VALUE);
           titleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+
           Label subtitleLabel = new Label("Control the AGV by adding instructions to the Queue.");
           subtitleLabel.setStyle("-fx-font-weight: bold;");
           subtitleLabel.setMaxWidth(Double.MAX_VALUE);
@@ -83,11 +69,9 @@ public class AGVPage extends Application implements IGUIProcessingService {
           primaryStage.setScene(scene);
           primaryStage.show();
 
-          // Drag-and-drop
-
+          // Drag and drop from instructionList
           instructionList.setOnDragDetected(event -> {
                String selected = instructionList.getSelectionModel().getSelectedItem();
-
                if (selected != null) {
                     Dragboard db = instructionList.startDragAndDrop(TransferMode.COPY);
                     ClipboardContent content = new ClipboardContent();
@@ -97,11 +81,10 @@ public class AGVPage extends Application implements IGUIProcessingService {
                }
           });
 
-
-          // reordering
+          // Drag from queue for reordering
           instructionQueue.setOnDragDetected(event -> {
                String selected = instructionQueue.getSelectionModel().getSelectedItem();
-               if (selected != null && !isRunning[0]) {
+               if (selected != null && !instructionSequence.isRunning()) {
                     Dragboard db = instructionQueue.startDragAndDrop(TransferMode.MOVE);
                     ClipboardContent content = new ClipboardContent();
                     content.putString(selected);
@@ -110,11 +93,8 @@ public class AGVPage extends Application implements IGUIProcessingService {
                }
           });
 
-          // Handle drops outside of any specific cell (e.g. at the bottom)
-
           instructionQueue.setOnDragOver(event -> {
-
-               if (!isRunning[0] && event.getGestureSource() != instructionQueue && event.getDragboard().hasString()) {
+               if (!instructionSequence.isRunning() && event.getGestureSource() != instructionQueue && event.getDragboard().hasString()) {
                     event.acceptTransferModes(TransferMode.COPY);
                }
                event.consume();
@@ -122,19 +102,15 @@ public class AGVPage extends Application implements IGUIProcessingService {
 
           instructionQueue.setOnDragDropped(event -> {
                Dragboard db = event.getDragboard();
-
-               if (db.hasString() && !isRunning[0] && event.getGestureSource() != instructionQueue) {
-                    queue.add(db.getString());
-
+               if (db.hasString() && !instructionSequence.isRunning()) {
+                    instructionSequence.addInstruction(db.getString());
                     System.out.println("Instruction added via drag-and-drop (bottom): " + db.getString());
-
                     event.setDropCompleted(true);
                } else {
                     event.setDropCompleted(false);
                }
                event.consume();
           });
-
 
           instructionQueue.setCellFactory(new Callback<>() {
                @Override
@@ -148,28 +124,23 @@ public class AGVPage extends Application implements IGUIProcessingService {
                     };
 
                     cell.setOnDragOver(event -> {
-                         if (!isRunning[0] && event.getGestureSource() != cell && event.getDragboard().hasString()) {
+                         if (!instructionSequence.isRunning() && event.getGestureSource() != cell && event.getDragboard().hasString()) {
                               event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-
                          }
                          event.consume();
                     });
 
                     cell.setOnDragDropped(event -> {
-
                          Dragboard db = event.getDragboard();
-                         boolean success = false;
-
-                         if (db.hasString() && !isRunning[0]) {
+                         if (db.hasString() && !instructionSequence.isRunning()) {
                               String draggedItem = db.getString();
                               int dropIndex = cell.getIndex();
+                              ObservableList<String> queue = instructionSequence.getQueue();
 
                               if (event.getGestureSource() == instructionList) {
-
                                    queue.add(dropIndex, draggedItem);
                                    System.out.println("Instruction added via drag-and-drop: " + draggedItem);
                               } else if (event.getGestureSource() == instructionQueue) {
-
                                    int draggedIndex = queue.indexOf(draggedItem);
                                    if (draggedIndex != -1 && draggedIndex != dropIndex) {
                                         queue.remove(draggedIndex);
@@ -178,105 +149,41 @@ public class AGVPage extends Application implements IGUIProcessingService {
                                         System.out.println("Instruction reordered via drag-and-drop: " + draggedItem);
                                    }
                               }
-                              success = true;
-
+                              event.setDropCompleted(true);
+                         } else {
+                              event.setDropCompleted(false);
                          }
-
-                         event.setDropCompleted(success);
                          event.consume();
                     });
+
                     return cell;
                }
           });
 
-
-
-          // Button Logic
-          startProductionButton.setOnAction(e -> {
-               if (queue.isEmpty()) {
-                    System.out.println("Queue is empty. Nothing to process.");
-                    return;
-               }
-
-               if (productionTimeline[0] != null && productionTimeline[0].getStatus() == Timeline.Status.RUNNING) {
-                    System.out.println("Production is already running.");
-                    return;
-               }
-
-               System.out.println("Production started");
-               isRunning[0] = true;
-
-               // Disable the start, add, remove, clear while running
-               startProductionButton.setDisable(true);
-               addInstructionSequenceButton.setDisable(true);
-               removeInstructionSequenceButton.setDisable(true);
-               ClearInstructionQueueButton.setDisable(true);
-
-               productionTimeline[0] = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-                    if (!queue.isEmpty()) {
-                         String instruction = queue.get(currentIndex[0]);
-                         System.out.println("Executing instruction: " + instruction);
-                         currentInstructionLabel.setText("Current Instruction: " + instruction);
-
-                         currentIndex[0] = (currentIndex[0] + 1) % queue.size();
-                    } else {
-                         System.out.println("Queue is unexpectedly empty.");
-                    }
-               }));
-
-               productionTimeline[0].setCycleCount(Timeline.INDEFINITE);
-               productionTimeline[0].play();
-          });
-
-          stopProductionButton.setOnAction(e -> {
-               if (productionTimeline[0] != null) {
-                    productionTimeline[0].stop();
-                    System.out.println("Production stopped manually.");
-                    isRunning[0] = false;
-
-
-                    startProductionButton.setDisable(false);
-                    addInstructionSequenceButton.setDisable(false);
-                    removeInstructionSequenceButton.setDisable(false);
-                    ClearInstructionQueueButton.setDisable(false);
-               }
-          });
-
-          ClearInstructionQueueButton.setOnAction(e -> {
-               queue.clear(); // Clears the queue
-               System.out.println("Queue cleared.");
-               currentInstructionLabel.setText("Current Instruction: None");
-          });
-
+          // Button Actions
           addInstructionSequenceButton.setOnAction(e -> {
-               if (!isRunning[0]) {
-                    String selected = instructionList.getSelectionModel().getSelectedItem();
-                    if (selected != null) {
-                         queue.add(selected);
-                         System.out.println("Instruction added: " + selected);
-                    }
-               } else {
-                    System.out.println("Cannot modify queue while production is running.");
-               }
+               String selected = instructionList.getSelectionModel().getSelectedItem();
+               if (selected != null) instructionSequence.addInstruction(selected);
           });
 
           removeInstructionSequenceButton.setOnAction(e -> {
-               if (!isRunning[0]) {
-                    String selected = instructionQueue.getSelectionModel().getSelectedItem();
-                    if (selected != null) {
-                         queue.remove(selected);
-                         System.out.println("Instruction removed: " + selected);
-                    }
-               } else {
-                    System.out.println("Cannot modify queue while production is running.");
-               }
+               String selected = instructionQueue.getSelectionModel().getSelectedItem();
+               if (selected != null) instructionSequence.removeInstruction(selected);
           });
 
+          ClearInstructionQueueButton.setOnAction(e ->
+                  instructionSequence.clearQueue(currentInstructionLabel)
+          );
 
+          startProductionButton.setOnAction(e ->
+                  instructionSequence.startProduction(currentInstructionLabel,
+                          startProductionButton, addInstructionSequenceButton, removeInstructionSequenceButton, ClearInstructionQueueButton)
+          );
+
+          stopProductionButton.setOnAction(e ->
+                  instructionSequence.stopProduction(startProductionButton, addInstructionSequenceButton, removeInstructionSequenceButton, ClearInstructionQueueButton)
+          );
      }
-
-
-
 
      @Override
      public void initialize(Stage stage) {
