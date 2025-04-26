@@ -17,7 +17,9 @@ import javafx.util.Duration;
 
 public class InstructionSequence implements IInstructionSequenceProcessingService {
 
-    // sequence er i dette Observablelist det skal opdateres når der tilføges api calls
+    //Observablelist det skal opdateres når der tilføges api calls.
+    //check også agv gui da den også indeholder et dele af Sequence.
+
     private final ObservableList<String> queue = FXCollections.observableArrayList();
     private final IntegerProperty currentIndex = new SimpleIntegerProperty(0);
     private final BooleanProperty isRunning = new SimpleBooleanProperty(false);
