@@ -17,6 +17,7 @@ import javafx.util.Duration;
 
 public class InstructionSequence implements IInstructionSequenceProcessingService {
 
+    // sequence er i dette Observablelist det skal opdateres når der tilføges api calls
     private final ObservableList<String> queue = FXCollections.observableArrayList();
     private final IntegerProperty currentIndex = new SimpleIntegerProperty(0);
     private final BooleanProperty isRunning = new SimpleBooleanProperty(false);
@@ -30,6 +31,8 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
         return isRunning.get();
     }
 
+
+    //basic manipulering af sequence
     public void addInstruction(String instruction) {
         if (!isRunning()) {
             queue.add(instruction);
