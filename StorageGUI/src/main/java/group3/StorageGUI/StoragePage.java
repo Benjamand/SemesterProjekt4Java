@@ -1,11 +1,11 @@
 package group3.StorageGUI;
 
 import group3.component.common.services.IGUIProcessingService;
+import group3.component.common.API.IWarehouseAPIProcessingService;
+import group3.component.common.API.Item;
+import group3.component.common.API.Warehouse;
 import javafx.application.Application;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,38 +15,59 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class StoragePage extends Application implements IGUIProcessingService {
+import java.io.IOException;
+import java.util.List;
+import java.util.ServiceLoader;
+
+public class StoragePage extends Application implements IWarehouseAPIProcessingService, IGUIProcessingService {
 
     private TableView<Item> warehouseTable = new TableView<>();
     private TableView<Item> assemblerTable = new TableView<>();
 
+    private IWarehouseAPIProcessingService ApiService;
+
     @Override
     public void start(Stage primaryStage) {
+
+        ServiceLoader<IWarehouseAPIProcessingService> services = ServiceLoader.load(IWarehouseAPIProcessingService.class);
+
+        for (IWarehouseAPIProcessingService service : services) {
+            ApiService = service;
+        }
+
         primaryStage.setTitle("Storage Page");
 
-        // Initialize tables
         setupTable(warehouseTable);
         setupTable(assemblerTable);
 
-        // Load data into tables
-        warehouseTable.setItems(getSampleWarehouseData());
-        assemblerTable.setItems(getSampleAssemblerData());
+        try {
+            Warehouse warehouse = ApiService.getWarehouseInfo();
+            warehouseTable.setItems(FXCollections.observableArrayList(warehouse.getItems()));  // Set warehouse items
+/*
+            Warehouse assembler = ApiService.getAssemblerInfo();  // Fetch assembler data
+            assemblerTable.setItems(FXCollections.observableArrayList(assembler.getItems()));  // Set assembler items
+ */
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        // Labels for tables
+        // Create labels and layout
         Label titleLabel = new Label("Storage Page");
         titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 25px;");
         titleLabel.setMaxWidth(Double.MAX_VALUE);
         titleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+
         Label subtitleLabel = new Label("Warehouse and Assembler info");
         subtitleLabel.setStyle("-fx-font-weight: bold;");
         subtitleLabel.setMaxWidth(Double.MAX_VALUE);
         subtitleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+
         Label warehouseLabel = new Label("Warehouse");
         warehouseLabel.setStyle("-fx-font-weight: bold;");
         Label assemblerLabel = new Label("Assembler");
         assemblerLabel.setStyle("-fx-font-weight: bold;");
 
-        // Layout
+        // Layout setup
         VBox layout = new VBox(10, titleLabel, subtitleLabel, warehouseLabel, warehouseTable, assemblerLabel, assemblerTable);
         Scene scene = new Scene(layout, 600, 400);
 
@@ -55,7 +76,7 @@ public class StoragePage extends Application implements IGUIProcessingService {
     }
 
     private void setupTable(TableView<Item> table) {
-        TableColumn<Item, Integer> idColumn = new TableColumn<>("ID");
+        TableColumn<Item, String> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         TableColumn<Item, String> contentColumn = new TableColumn<>("Content");
@@ -64,18 +85,33 @@ public class StoragePage extends Application implements IGUIProcessingService {
         table.getColumns().addAll(idColumn, contentColumn);
     }
 
-    private ObservableList<Item> getSampleWarehouseData() {
-        return FXCollections.observableArrayList(
-                new Item(1, "Item A"),
-                new Item(2, "Item B")
-        );
+    @Override
+    public Warehouse getWarehouseInfo() throws IOException {
+        return ApiService.getWarehouseInfo();
     }
 
-    private ObservableList<Item> getSampleAssemblerData() {
-        return FXCollections.observableArrayList(
-                new Item(3, "Item C"),
-                new Item(4, "Item D")
-        );
+    public Warehouse getAssemblerInfo() throws IOException {
+        return ApiService.getWarehouseInfo();
+    }
+
+    @Override
+    public String commandAGV(String command, String location) throws IOException {
+        return ApiService.commandAGV(command, location);
+    }
+
+    @Override
+    public String pickWarehouseItem(String id) throws IOException {
+        return ApiService.pickWarehouseItem(id);
+    }
+
+    @Override
+    public String insertWarehouseItem(String id, String name) throws IOException {
+        return ApiService.insertWarehouseItem(id, name);
+    }
+
+    @Override
+    public Warehouse getWarehouseFromString(String response) {
+        return ApiService.getWarehouseFromString(response);
     }
 
     public static void main(String[] args) {
