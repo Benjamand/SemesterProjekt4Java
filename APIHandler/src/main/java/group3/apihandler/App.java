@@ -91,7 +91,7 @@ public class App implements IWarehouseAPIProcessingService {
     }
 
     public Warehouse getWarehouseInfo() throws IOException {
-        URL url = new URL(baseUrl + "/warehouse/getinventory");
+        URL url = new URL(baseUrl + "/warehouse/inventory");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
