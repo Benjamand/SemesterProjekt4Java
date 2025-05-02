@@ -1,5 +1,6 @@
 package group3.apihandler;
 
+import group3.component.common.API.Warehouse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
