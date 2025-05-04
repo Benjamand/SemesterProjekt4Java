@@ -1,9 +1,9 @@
 package group3.Instruction;
 
 import group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
+import group3.component.common.InstructionSequence.Instruction;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -14,30 +14,28 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 
 public class InstructionSequence implements IInstructionSequenceProcessingService {
 
     //Observablelist det skal opdateres når der tilføges api calls.
     //check også agv gui da den også indeholder et dele af Sequence.
 
-    private final ObservableList<String> queue = FXCollections.observableArrayList();
+    private final ObservableList<String> visualQueue = FXCollections.observableArrayList();
+    private final ArrayList<Instruction> instructionQueue = new ArrayList<>();
     private final IntegerProperty currentIndex = new SimpleIntegerProperty(0);
     private final BooleanProperty isRunning = new SimpleBooleanProperty(false);
     private Timeline productionTimeline;
-
-    public ObservableList<String> getQueue() {
-        return queue;
-    }
 
     public boolean isRunning() {
         return isRunning.get();
     }
 
-
     //basic manipulering af sequence
     public void addInstruction(String instruction) {
         if (!isRunning()) {
-            queue.add(instruction);
+            visualQueue.add(instruction);
             System.out.println("Instruction added: " + instruction);
         } else {
             System.out.println("Cannot modify queue while production is running.");
@@ -46,7 +44,7 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
 
     public void removeInstruction(String instruction) {
         if (!isRunning()) {
-            queue.remove(instruction);
+            visualQueue.remove(instruction);
             System.out.println("Instruction removed: " + instruction);
         } else {
             System.out.println("Cannot modify queue while production is running.");
@@ -55,7 +53,7 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
 
     public void clearQueue(Label currentInstructionLabel) {
         if (!isRunning()) {
-            queue.clear();
+            visualQueue.clear();
             System.out.println("Queue cleared.");
             currentInstructionLabel.setText("Current Instruction: None");
         } else {
@@ -64,7 +62,7 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
     }
 
     public void startProduction(Label currentInstructionLabel, Button... buttonsToDisable) {
-        if (queue.isEmpty()) {
+        if (visualQueue.isEmpty()) {
             System.out.println("Queue is empty. Nothing to process.");
             return;
         }
@@ -78,11 +76,11 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
         for (Button b : buttonsToDisable) b.setDisable(true);
 
         productionTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            if (!queue.isEmpty()) {
-                String instruction = queue.get(currentIndex.get());
+            if (!visualQueue.isEmpty()) {
+                String instruction = visualQueue.get(currentIndex.get());
                 System.out.println("Executing instruction: " + instruction);
                 currentInstructionLabel.setText("Current Instruction: " + instruction);
-                currentIndex.set((currentIndex.get() + 1) % queue.size());
+                currentIndex.set((currentIndex.get() + 1) % visualQueue.size());
             }
         }));
         productionTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -96,5 +94,10 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
             for (Button b : buttonsToEnable) b.setDisable(false);
             System.out.println("Production stopped manually.");
         }
+    }
+
+    @Override
+    public ObservableList<String> getQueue() {
+        return visualQueue;
     }
 }

@@ -1,5 +1,6 @@
 package group3.AGVGUI;
 
+import group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
 import group3.component.common.services.IGUIProcessingService;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -13,15 +14,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import group3.Instruction.InstructionSequence;
 
 
 
 
 public class AGVPage extends Application implements IGUIProcessingService {
 
-     private final InstructionSequence instructionSequence = new InstructionSequence();
-
+     IInstructionSequenceProcessingService instructionSequence;
      @Override
      public void start(Stage primaryStage) {
           primaryStage.setTitle("AGV Page");
