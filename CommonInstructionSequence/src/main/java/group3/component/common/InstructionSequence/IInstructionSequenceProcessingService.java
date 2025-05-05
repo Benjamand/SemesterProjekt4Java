@@ -1,5 +1,6 @@
 package group3.component.common.InstructionSequence;
 
+import group3.component.common.API.IInstructionAPIProcessingService;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,12 +9,12 @@ public interface IInstructionSequenceProcessingService {
 
      ObservableList<String> getQueue();
 
+     void setService(IInstructionAPIProcessingService service);
+
      boolean isRunning();
 
-     void addInstruction(String string);
-
-
-     void removeInstruction(String selected);
+     void addInstruction(Instruction instruction);
+     void removeInstruction(Instruction instruction);
 
      void clearQueue(Label currentInstructionLabel);
 

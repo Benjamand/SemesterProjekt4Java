@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import group3.component.common.API.IInstructionAPIProcessingService;
 import group3.component.common.API.IWarehouseAPIProcessingService;
 import group3.component.common.API.Item;
 import group3.component.common.API.Warehouse;
@@ -17,7 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class App implements IWarehouseAPIProcessingService {
+public class App implements IWarehouseAPIProcessingService, IInstructionAPIProcessingService {
 
     String baseUrl = "http://127.0.0.1:8000";
 
@@ -29,6 +30,7 @@ public class App implements IWarehouseAPIProcessingService {
         //System.out.println(appInstance.commandAGV("move", "assembly"));
     }
 
+    @Override
     public String commandAGV(String command, String location) throws IOException {
         URL url = new URL(baseUrl + "/agv/");
 
@@ -37,6 +39,7 @@ public class App implements IWarehouseAPIProcessingService {
         return getString(url, body);
     }
 
+    @Override
     public String pickWarehouseItem(String id) throws IOException {
         URL url = new URL(baseUrl + "/warehouse/pick");
 
@@ -45,6 +48,7 @@ public class App implements IWarehouseAPIProcessingService {
         return getString(url, body);
     }
 
+    @Override
     public String insertWarehouseItem(String id, String name) throws IOException {
         URL url = new URL(baseUrl + "/warehouse/insert");
 

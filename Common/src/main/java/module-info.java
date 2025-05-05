@@ -1,5 +1,6 @@
 module Common {
-     requires javafx.controls;
+     requires CommonInstructionSequence;
+     requires CommonAPI;
      exports group3.component.common.services;
 
 }

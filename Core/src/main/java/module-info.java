@@ -3,6 +3,7 @@ module Core {
      uses group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
      uses group3.component.common.API.IWarehouseAPIProcessingService;
      uses group3.component.common.API.IInstructionAPIProcessingService;
+     uses group3.component.common.services.IInstructionGUIProcessingService;
      requires javafx.controls;
      requires Common;
      requires CommonInstructionSequence;

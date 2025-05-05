@@ -1,7 +1,9 @@
 package group3.AGVGUI;
 
+import group3.component.common.API.IInstructionAPIProcessingService;
 import group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
 import group3.component.common.services.IGUIProcessingService;
+import group3.component.common.services.IInstructionGUIProcessingService;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,9 +20,10 @@ import javafx.util.Callback;
 
 
 
-public class AGVPage extends Application implements IGUIProcessingService {
+public class AGVPage extends Application implements IGUIProcessingService, IInstructionGUIProcessingService {
 
      IInstructionSequenceProcessingService instructionSequence;
+
      @Override
      public void start(Stage primaryStage) {
           primaryStage.setTitle("AGV Page");
@@ -33,7 +36,7 @@ public class AGVPage extends Application implements IGUIProcessingService {
           Button ClearInstructionQueueButton = new Button("Clear Instruction Queue");
 
           // Instruction list
-          ObservableList<String> instructionsAGV = FXCollections.observableArrayList("Storage", "Assembly station", "Pick up", "Put down");
+          ObservableList<String> instructionsAGV = FXCollections.observableArrayList("Storage", "Assembly Station", "Pick up", "Put down");
           ListView<String> instructionList = new ListView<>(instructionsAGV);
           ListView<String> instructionQueue = new ListView<>(instructionSequence.getQueue());
 
@@ -187,6 +190,13 @@ public class AGVPage extends Application implements IGUIProcessingService {
      @Override
      public void initialize(Stage stage) {
           start(stage);
+
+     }
+
+     @Override
+     public void initializeServices(IInstructionSequenceProcessingService instructionService, IInstructionAPIProcessingService apiService) {
+          instructionSequence = instructionService;
+          instructionSequence.setService(apiService);
      }
 
      @Override
