@@ -1,10 +1,12 @@
 package group3.component.common.API;
 
+import java.io.IOException;
+
 public interface IInstructionAPIProcessingService {
 
-    void commandAGV(String move, String location);
+    String commandAGV(String move, String location) throws IOException;
 
-    void pickWarehouseItem(String id);
+    String pickWarehouseItem(String id) throws IOException;
 
-    void insertWarehouseItem(String id, String itemName);
+    String insertWarehouseItem(String id, String itemName) throws IOException;
 }
