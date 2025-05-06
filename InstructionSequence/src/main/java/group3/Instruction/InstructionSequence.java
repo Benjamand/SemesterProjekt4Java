@@ -4,111 +4,113 @@ import group3.component.common.API.IInstructionAPIProcessingService;
 import group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
+import java.io.IOException;
 
 public class InstructionSequence implements IInstructionSequenceProcessingService {
 
-    //Observablelist det skal opdateres når der tilføges api calls.
-    //check også agv gui da den også indeholder et dele af Sequence.
-
-    private final ObservableList<String> queue = FXCollections.observableArrayList();
-    private final IntegerProperty currentIndex = new SimpleIntegerProperty(0);
-    private final BooleanProperty isRunning = new SimpleBooleanProperty(false);
+    private final ObservableList<String> instructionQueue = FXCollections.observableArrayList();
+    private IInstructionAPIProcessingService apiService;
+    private boolean running = false;
     private Timeline productionTimeline;
-
-    private IInstructionAPIProcessingService service;
 
     @Override
     public ObservableList<String> getQueue() {
-        return queue;
+        return instructionQueue;
     }
 
     @Override
     public void setService(IInstructionAPIProcessingService service) {
-        this.service = service;
+        this.apiService = service;
     }
+
     @Override
     public boolean isRunning() {
-        return isRunning.get();
+        return running;
     }
 
-
-    //basic manipulering af sequence
     @Override
     public void addInstruction(String instruction) {
-        if (!isRunning()) {
-            queue.add(instruction);
-            System.out.println("Instruction added: " + instruction);
-        } else {
-            System.out.println("Cannot modify queue while production is running.");
-        }
+        instructionQueue.add(instruction);
     }
 
     @Override
     public void removeInstruction(String instruction) {
-        if (!isRunning()) {
-            queue.remove(instruction);
-            System.out.println("Instruction removed: " + instruction);
-        } else {
-            System.out.println("Cannot modify queue while production is running.");
-        }
+        instructionQueue.remove(instruction);
     }
 
     @Override
     public void clearQueue(Label currentInstructionLabel) {
-        if (!isRunning()) {
-            queue.clear();
-            System.out.println("Queue cleared.");
-            currentInstructionLabel.setText("Current Instruction: None");
-        } else {
-            System.out.println("Cannot clear queue while production is running.");
-        }
+        instructionQueue.clear();
+        currentInstructionLabel.setText("Current Instruction: None");
     }
 
     @Override
     public void startProduction(Label currentInstructionLabel, Button... buttonsToDisable) {
-        if (queue.isEmpty()) {
-            System.out.println("Queue is empty. Nothing to process.");
-            return;
-        }
+        if (running || apiService == null) return;
 
-        if (isRunning()) {
-            System.out.println("Production is already running.");
-            return;
-        }
+        running = true;
+        for (Button button : buttonsToDisable) button.setDisable(true);
 
-        isRunning.set(true);
-        for (Button b : buttonsToDisable) b.setDisable(true);
-
-        productionTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            if (!queue.isEmpty()) {
-                String instruction = queue.get(currentIndex.get());
-                System.out.println("Executing instruction: " + instruction);
-                currentInstructionLabel.setText("Current Instruction: " + instruction);
-                currentIndex.set((currentIndex.get() + 1) % queue.size());
-            }
-        }));
+        productionTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(3), event -> {
+                    if (!instructionQueue.isEmpty()) {
+                        processNextInstruction(currentInstructionLabel);
+                    } else {
+                        stopProduction(buttonsToDisable);
+                        currentInstructionLabel.setText("Production complete.");
+                    }
+                })
+        );
         productionTimeline.setCycleCount(Timeline.INDEFINITE);
         productionTimeline.play();
     }
 
     @Override
-    public void stopProduction(Button... buttonsToEnable) {
-        if (productionTimeline != null) {
-            productionTimeline.stop();
-            isRunning.set(false);
-            for (Button b : buttonsToEnable) b.setDisable(false);
-            System.out.println("Production stopped manually.");
+    public void stopProduction(Button... buttonsToDisable) {
+        if (!running) return;
+
+        running = false;
+        if (productionTimeline != null) productionTimeline.stop();
+        for (Button button : buttonsToDisable) button.setDisable(false);
+    }
+
+    private void processNextInstruction(Label statusLabel) {
+        if (instructionQueue.isEmpty()) return;
+
+        String instruction = instructionQueue.remove(0);
+        statusLabel.setText("Executing: " + instruction);
+
+        if (instruction.startsWith("Move to")) {
+            String location = instruction.replace("Move to ", "").trim();
+            apiService.commandAGV("move", location);
+
+        } else if (instruction.startsWith("Pick up id:")) {
+            String[] parts = instruction.replace("Pick up id:", "").split("at");
+            String id = parts[0].trim();
+            String location = parts[1].trim();
+
+            apiService.commandAGV("move", location);
+            apiService.pickWarehouseItem(id);
+
+        } else if (instruction.startsWith("Put down")) {
+            // Example: "Put down itemName into id: 3 at Warehouse"
+            String afterPut = instruction.replace("Put down ", "");
+            String[] parts = afterPut.split("into id:|at");
+            String itemName = parts[0].trim();
+            String id = parts[1].trim();
+            String location = parts[2].trim();
+
+            apiService.commandAGV("move", location);
+            apiService.insertWarehouseItem(id, itemName);
+
+        } else {
+            statusLabel.setText("Unknown instruction format.");
         }
     }
 }
