@@ -5,6 +5,7 @@ module InstructionSequence {
     requires CommonInstructionSequence;
     requires Core;
     requires Common;
+    requires CommonAPI;
     exports group3.Instruction;
     provides IInstructionSequenceProcessingService with group3.Instruction.InstructionSequence;
 }

@@ -4,6 +4,7 @@ import group3.component.common.API.IInstructionAPIProcessingService;
 import group3.component.common.API.IWarehouseAPIProcessingService;
 import group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
 import group3.component.common.services.IGUIProcessingService;
+import group3.component.common.services.IInstructionGUIProcessingService;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,6 +29,8 @@ public class Navigation extends Application {
 
     private static ModuleLayer layer;
     private ArrayList<Button> buttons = new ArrayList<>();
+
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Navigation Page");
@@ -39,7 +42,22 @@ public class Navigation extends Application {
 
         exitButton.setOnAction(e -> primaryStage.close());
 
+        IInstructionSequenceProcessingService loadedInstructionService = getInstructionSequenceServices()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No IInstructionSequenceProcessingService implementation found."));
+
+        IInstructionAPIProcessingService loadedAPIService = getInstructionAPIServices()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No IInstructionAPIProcessingService implementation found."));
+
+
         for (IGUIProcessingService iGuiPlugin : getGUIServices()) {
+            if (iGuiPlugin instanceof IInstructionGUIProcessingService) {
+                IInstructionGUIProcessingService instructionPlugin = (IInstructionGUIProcessingService) iGuiPlugin;
+                instructionPlugin.initializeServices(loadedInstructionService, loadedAPIService);
+            }
             insertButton(iGuiPlugin);
         }
 
@@ -63,6 +81,9 @@ public class Navigation extends Application {
 
     private Collection<? extends IInstructionAPIProcessingService> getInstructionAPIServices() {
         return ServiceLoader.load(layer, IInstructionAPIProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());    }
+
+    private Collection<? extends IInstructionGUIProcessingService> getInstructionGUIServices() {
+        return ServiceLoader.load(layer, IInstructionGUIProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());    }
 
 
     void insertButton(IGUIProcessingService processingService) {

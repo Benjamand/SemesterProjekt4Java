@@ -1,5 +1,6 @@
 package group3.Instruction;
 
+import group3.component.common.API.IInstructionAPIProcessingService;
 import group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -25,16 +26,25 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
     private final BooleanProperty isRunning = new SimpleBooleanProperty(false);
     private Timeline productionTimeline;
 
+    private IInstructionAPIProcessingService service;
+
+    @Override
     public ObservableList<String> getQueue() {
         return queue;
     }
 
+    @Override
+    public void setService(IInstructionAPIProcessingService service) {
+        this.service = service;
+    }
+    @Override
     public boolean isRunning() {
         return isRunning.get();
     }
 
 
     //basic manipulering af sequence
+    @Override
     public void addInstruction(String instruction) {
         if (!isRunning()) {
             queue.add(instruction);
@@ -44,6 +54,7 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
         }
     }
 
+    @Override
     public void removeInstruction(String instruction) {
         if (!isRunning()) {
             queue.remove(instruction);
@@ -53,6 +64,7 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
         }
     }
 
+    @Override
     public void clearQueue(Label currentInstructionLabel) {
         if (!isRunning()) {
             queue.clear();
@@ -63,6 +75,7 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
         }
     }
 
+    @Override
     public void startProduction(Label currentInstructionLabel, Button... buttonsToDisable) {
         if (queue.isEmpty()) {
             System.out.println("Queue is empty. Nothing to process.");
@@ -89,6 +102,7 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
         productionTimeline.play();
     }
 
+    @Override
     public void stopProduction(Button... buttonsToEnable) {
         if (productionTimeline != null) {
             productionTimeline.stop();
