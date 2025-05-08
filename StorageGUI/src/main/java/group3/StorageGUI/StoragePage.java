@@ -6,24 +6,22 @@ import group3.component.common.API.Item;
 import group3.component.common.API.Warehouse;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.ServiceLoader;
 
 public class StoragePage extends Application implements IWarehouseAPIProcessingService, IGUIProcessingService {
 
     private TableView<Item> warehouseTable = new TableView<>();
     private TableView<Item> assemblerTable = new TableView<>();
-
     private IWarehouseAPIProcessingService ApiService;
 
     @Override
@@ -42,34 +40,46 @@ public class StoragePage extends Application implements IWarehouseAPIProcessingS
 
         try {
             Warehouse warehouse = ApiService.getWarehouseInfo();
-            warehouseTable.setItems(FXCollections.observableArrayList(warehouse.getItems()));  // Set warehouse items
-/*
-            Warehouse assembler = ApiService.getAssemblerInfo();  // Fetch assembler data
-            assemblerTable.setItems(FXCollections.observableArrayList(assembler.getItems()));  // Set assembler items
- */
+            warehouseTable.setItems(FXCollections.observableArrayList(warehouse.getItems())); // Set warehouse items
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Create labels and layout
         Label titleLabel = new Label("Storage Page");
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 25px;");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 28px;");
         titleLabel.setMaxWidth(Double.MAX_VALUE);
-        titleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+        titleLabel.setAlignment(Pos.CENTER);
 
-        Label subtitleLabel = new Label("Warehouse and Assembler info");
-        subtitleLabel.setStyle("-fx-font-weight: bold;");
+        Label subtitleLabel = new Label("Warehouse and Assembler Information");
+        subtitleLabel.setStyle("-fx-font-size: 16px; -fx-font-style: italic;");
         subtitleLabel.setMaxWidth(Double.MAX_VALUE);
-        subtitleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+        subtitleLabel.setAlignment(Pos.CENTER);
 
         Label warehouseLabel = new Label("Warehouse");
-        warehouseLabel.setStyle("-fx-font-weight: bold;");
+        warehouseLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         Label assemblerLabel = new Label("Assembler");
-        assemblerLabel.setStyle("-fx-font-weight: bold;");
+        assemblerLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
-        // Layout setup
-        VBox layout = new VBox(10, titleLabel, subtitleLabel, warehouseLabel, warehouseTable, assemblerLabel, assemblerTable);
-        Scene scene = new Scene(layout, 600, 400);
+      
+        warehouseTable.setTooltip(new Tooltip("Displays items in the warehouse"));
+        assemblerTable.setTooltip(new Tooltip("Displays items in the assembler"));
+
+       
+        Button refreshButton = new Button("Refresh Data");
+        refreshButton.setOnAction(e -> refreshData());
+
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> primaryStage.close());
+
+        HBox buttonBox = new HBox(10, refreshButton, closeButton);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        
+        VBox layout = new VBox(15, titleLabel, subtitleLabel, warehouseLabel, warehouseTable, assemblerLabel, assemblerTable, buttonBox);
+        layout.setPadding(new Insets(20));
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout, 800, 600);
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -78,11 +88,26 @@ public class StoragePage extends Application implements IWarehouseAPIProcessingS
     private void setupTable(TableView<Item> table) {
         TableColumn<Item, String> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setPrefWidth(200);
 
         TableColumn<Item, String> contentColumn = new TableColumn<>("Content");
         contentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
+        contentColumn.setPrefWidth(400);
 
         table.getColumns().addAll(idColumn, contentColumn);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+
+    private void refreshData() {
+        try {
+            Warehouse warehouse = ApiService.getWarehouseInfo();
+            warehouseTable.setItems(FXCollections.observableArrayList(warehouse.getItems()));
+            // Uncomment and implement assembler data fetching if needed
+            // Warehouse assembler = ApiService.getAssemblerInfo();
+            // assemblerTable.setItems(FXCollections.observableArrayList(assembler.getItems()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
