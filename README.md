@@ -8,7 +8,7 @@ Tryk ctrl 2 gange for at indtaste kommandoer.
 
 Brug først: "mvn clean install" for at skabe JAR filerne
 
-Brug derefter denne kommando for at køre programmet: "java --module-path mods-mvn --class-path "libs /*" --module=Core/group3.component.App"
+Brug derefter denne kommando for at køre programmet: "java --module-path mods-mvn --class-path "libs /*" --module=Core/group3.component.Navigation"
 
 
 
