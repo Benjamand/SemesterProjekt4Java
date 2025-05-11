@@ -6,17 +6,15 @@ import group3.component.common.API.Item;
 import group3.component.common.API.Warehouse;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.ServiceLoader;
 
 public class StoragePage extends Application implements IWarehouseAPIProcessingService, IGUIProcessingService {
@@ -43,33 +41,42 @@ public class StoragePage extends Application implements IWarehouseAPIProcessingS
         try {
             Warehouse warehouse = ApiService.getWarehouseInfo();
             warehouseTable.setItems(FXCollections.observableArrayList(warehouse.getItems()));  // Set warehouse items
-/*
+            /*
             Warehouse assembler = ApiService.getAssemblerInfo();  // Fetch assembler data
             assemblerTable.setItems(FXCollections.observableArrayList(assembler.getItems()));  // Set assembler items
- */
+            */
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Create labels and layout
+       
         Label titleLabel = new Label("Storage Page");
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 25px;");
+        titleLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 25px;");
         titleLabel.setMaxWidth(Double.MAX_VALUE);
-        titleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+        titleLabel.setAlignment(Pos.CENTER);
 
-        Label subtitleLabel = new Label("Warehouse and Assembler info");
-        subtitleLabel.setStyle("-fx-font-weight: bold;");
+        Label subtitleLabel = new Label("Warehouse and Assembler Info");
+        subtitleLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
         subtitleLabel.setMaxWidth(Double.MAX_VALUE);
-        subtitleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+        subtitleLabel.setAlignment(Pos.CENTER);
 
         Label warehouseLabel = new Label("Warehouse");
-        warehouseLabel.setStyle("-fx-font-weight: bold;");
-        Label assemblerLabel = new Label("Assembler");
-        assemblerLabel.setStyle("-fx-font-weight: bold;");
+        warehouseLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;");
 
-        // Layout setup
-        VBox layout = new VBox(10, titleLabel, subtitleLabel, warehouseLabel, warehouseTable, assemblerLabel, assemblerTable);
-        Scene scene = new Scene(layout, 600, 400);
+        Label assemblerLabel = new Label("Assembler");
+        assemblerLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;");
+
+        
+        warehouseTable.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;");
+        assemblerTable.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;");
+
+        
+        VBox layout = new VBox(20, titleLabel, subtitleLabel, warehouseLabel, warehouseTable, assemblerLabel, assemblerTable);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(20));
+        layout.setStyle("-fx-background-color: #222222;");
+
+        Scene scene = new Scene(layout, 700, 500);
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -78,11 +85,14 @@ public class StoragePage extends Application implements IWarehouseAPIProcessingS
     private void setupTable(TableView<Item> table) {
         TableColumn<Item, String> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setStyle("-fx-text-fill: white; -fx-alignment: CENTER;");
 
         TableColumn<Item, String> contentColumn = new TableColumn<>("Content");
         contentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
+        contentColumn.setStyle("-fx-text-fill: white; -fx-alignment: CENTER;");
 
         table.getColumns().addAll(idColumn, contentColumn);
+        table.setStyle("-fx-background-color: #444444; -fx-border-color: #555555; -fx-border-width: 2px; -fx-border-radius: 5;");
     }
 
     @Override
@@ -125,6 +135,8 @@ public class StoragePage extends Application implements IWarehouseAPIProcessingS
 
     @Override
     public Button getButton() {
-        return new Button("Storage Page");
+        Button button = new Button("Storage Page");
+        button.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-border-radius: 5; -fx-background-radius: 5;");
+        return button;
     }
 }
