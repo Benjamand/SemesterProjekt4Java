@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import group3.component.common.API.AssemblyRecipe;
 import group3.component.common.API.IWarehouseAPIProcessingService;
 import group3.component.common.API.Item;
 import group3.component.common.API.Warehouse;
@@ -16,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class App implements IWarehouseAPIProcessingService {
 
@@ -24,9 +26,12 @@ public class App implements IWarehouseAPIProcessingService {
     public static void main(String[] args) throws IOException {
         App appInstance = new App();
         //System.out.println(appInstance.getWarehouseInfo());
-        System.out.println(appInstance.pickWarehouseItem("3"));
+        //System.out.println(appInstance.pickWarehouseItem("3"));
         //System.out.println(appInstance.insertWarehouseItem("1337", "Stuff"));
         //System.out.println(appInstance.commandAGV("move", "assembly"));
+        //System.out.println(appInstance.getAssemblyRecipes());
+        //System.out.println(appInstance.getAssemblyInventory());
+        System.out.println(appInstance.commandAssembly("2", "simple_drone"));
     }
 
     public String commandAGV(String command, String location) throws IOException {
@@ -108,10 +113,71 @@ public class App implements IWarehouseAPIProcessingService {
             }
             in.close();
 
+            System.out.println(response.toString());
             warehouse = getWarehouseFromString(response.toString());
         }
 
         return warehouse;
+    }
+
+    public List<AssemblyRecipe> getAssemblyRecipes() throws IOException {
+        URL url = new URL(baseUrl + "/assembly/recipes");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+
+        List<AssemblyRecipe> assemblyRecipes = new ArrayList<>();
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            assemblyRecipes =  getAssemblyRecipesFromString(response.toString());
+
+        }
+
+        return assemblyRecipes;
+    }
+
+    public String commandAssembly(String processId, String droneName) throws IOException {
+        URL url = new URL(baseUrl + "/assembly/");
+
+        String body = "{\"ProcessID\": " + "\"" + processId + "\", \"Drone\":" + "\"" + droneName + "\"}";
+
+        return getString(url, body);
+    }
+
+    @Override
+    public List<String> getAssemblyInventory() throws IOException {
+        URL url = new URL(baseUrl + "/assembly/inventory");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+
+        List<String> inventory = new ArrayList<>();
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            inventory =  getAssemblyInventoryFromString(response.toString());
+
+        }
+
+
+        return inventory;
     }
 
     public Warehouse getWarehouseFromString(String response) {
@@ -132,5 +198,36 @@ public class App implements IWarehouseAPIProcessingService {
         return new Warehouse(items, warehouseState);
     }
 
+    public List<AssemblyRecipe> getAssemblyRecipesFromString(String response) {
+        List<AssemblyRecipe> assemblyRecipes = new ArrayList<>();
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
+
+        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+            JsonObject recipe = entry.getValue().getAsJsonObject();
+            String productionName = entry.getKey();
+            String name = recipe.get("name").getAsString();
+            String description = recipe.get("description").getAsString();
+            List<String> ingredients = new ArrayList<>();
+            for (JsonElement ingredient: recipe.getAsJsonArray("ingredients")) {
+                ingredients.add(ingredient.getAsString());
+            }
+
+            assemblyRecipes.add(new AssemblyRecipe(productionName ,name, description, ingredients));
+        }
+        return assemblyRecipes;
+    }
+
+    public List<String> getAssemblyInventoryFromString(String response) {
+        List<String> inventory = new ArrayList<>();
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
+
+        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+            String ingredient = entry.getValue().getAsString();
+            inventory.add(ingredient);
+        }
+        return inventory;
+    }
 }
 
