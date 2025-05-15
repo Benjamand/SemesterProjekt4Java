@@ -5,7 +5,6 @@ import group3.component.common.InstructionSequence.IInstructionSequenceProcessin
 import group3.component.common.services.IGUIProcessingService;
 import group3.component.common.services.IInstructionGUIProcessingService;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,75 +19,95 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-
-
-
 public class AGVPage extends Application implements IGUIProcessingService, IInstructionGUIProcessingService {
 
-     private IInstructionSequenceProcessingService instructionSequence;
+    private IInstructionSequenceProcessingService instructionSequence;
 
-     @Override
-     public void start(Stage primaryStage) {
-          primaryStage.setTitle("AGV Page");
+    @Override
+public void start(Stage primaryStage) {
+    primaryStage.setTitle("AGV Page");
 
-          // Buttons
-          Button startProductionButton = new Button("Start Production");
-          Button stopProductionButton = new Button("Stop Production");
-          Button addInstructionSequenceButton = new Button("Add Instruction");
-          Button removeInstructionSequenceButton = new Button("Remove Instruction");
-          Button ClearInstructionQueueButton = new Button("Clear Instruction Queue");
+    // Buttons
+    Button startProductionButton = new Button("Start Production");
+    Button stopProductionButton = new Button("Stop Production");
+    Button addInstructionSequenceButton = new Button("Add Instruction");
+    Button removeInstructionSequenceButton = new Button("Remove Instruction");
+    Button clearInstructionQueueButton = new Button("Clear Instruction Queue");
 
-          ListView<String> instructionQueue = new ListView<>(instructionSequence.getQueue());
+    // Style buttons
+    String buttonStyle = "-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20; -fx-border-radius: 5; -fx-background-radius: 5;";
+    startProductionButton.setStyle(buttonStyle);
+    stopProductionButton.setStyle(buttonStyle);
+    addInstructionSequenceButton.setStyle(buttonStyle);
+    removeInstructionSequenceButton.setStyle(buttonStyle);
+    clearInstructionQueueButton.setStyle(buttonStyle);
 
-          // Labels
-          Label titleLabel = new Label("AGV Page");
-          titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 25px;");
-          titleLabel.setMaxWidth(Double.MAX_VALUE);
-          titleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+    // Instruction Queue
+    ListView<String> instructionQueue = new ListView<>(instructionSequence.getQueue());
+    instructionQueue.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;");
 
-          Label subtitleLabel = new Label("Control the AGV by adding instructions to the Queue.");
-          subtitleLabel.setStyle("-fx-font-weight: bold;");
-          subtitleLabel.setMaxWidth(Double.MAX_VALUE);
-          subtitleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+    // Labels
+    Label titleLabel = new Label("AGV Page");
+    titleLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 25px;");
+    titleLabel.setMaxWidth(Double.MAX_VALUE);
+    titleLabel.setAlignment(Pos.CENTER);
 
-          Label InstructionQueue = new Label("AGV Instruction Queue");
-          InstructionQueue.setStyle("-fx-font-weight: bold;");
-          Label currentInstructionLabel = new Label("Current Instruction: None");
-          currentInstructionLabel.setStyle("-fx-font-weight: bold;");
+    Label subtitleLabel = new Label("Control the AGV by adding instructions to the queue.");
+    subtitleLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+    subtitleLabel.setMaxWidth(Double.MAX_VALUE);
+    subtitleLabel.setAlignment(Pos.CENTER);
 
-          // Layouts
-          VBox labelBox = new VBox(10, titleLabel, subtitleLabel);
-          HBox buttonsBox = new HBox(20, startProductionButton, stopProductionButton);
-          HBox buttonHBox = new HBox(20, addInstructionSequenceButton, removeInstructionSequenceButton, ClearInstructionQueueButton);
-          VBox queuebox = new VBox(5, InstructionQueue, instructionQueue);
-          HBox listsBox = new HBox(20, queuebox);
-          VBox mainLayout = new VBox(20, labelBox, buttonsBox, buttonHBox, listsBox, currentInstructionLabel);
+    Label instructionQueueLabel = new Label("AGV Instruction Queue");
+    instructionQueueLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;");
 
-          instructionQueue.setPrefWidth(300);
-          queuebox.setPrefWidth(320);
+    Label currentInstructionLabel = new Label("Current Instruction: None");
+    currentInstructionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
 
-          Scene scene = new Scene(mainLayout, 600, 400);
-          primaryStage.setScene(scene);
-          primaryStage.show();
+    // Layouts
+    VBox labelBox = new VBox(10, titleLabel, subtitleLabel);
+    labelBox.setAlignment(Pos.CENTER);
 
-          // Drag from queue for reordering
-          instructionQueue.setOnDragDetected(event -> {
-               String selected = instructionQueue.getSelectionModel().getSelectedItem();
-               if (selected != null && !instructionSequence.isRunning()) {
-                    Dragboard db = instructionQueue.startDragAndDrop(TransferMode.MOVE);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putString(selected);
-                    db.setContent(content);
-                    event.consume();
-               }
-          });
+    HBox buttonsBox = new HBox(20, startProductionButton, stopProductionButton);
+    buttonsBox.setAlignment(Pos.CENTER);
 
-          instructionQueue.setOnDragOver(event -> {
-               if (!instructionSequence.isRunning() && event.getGestureSource() != instructionQueue && event.getDragboard().hasString()) {
-                    event.acceptTransferModes(TransferMode.COPY);
-               }
-               event.consume();
-          });
+    HBox actionButtonsBox = new HBox(20, addInstructionSequenceButton, removeInstructionSequenceButton, clearInstructionQueueButton);
+    actionButtonsBox.setAlignment(Pos.CENTER);
+
+    VBox queueBox = new VBox(10, instructionQueueLabel, instructionQueue);
+    queueBox.setAlignment(Pos.CENTER);
+    queueBox.setPadding(new Insets(10));
+    queueBox.setStyle("-fx-background-color: #444444; -fx-border-color: #555555; -fx-border-width: 2px; -fx-border-radius: 5;");
+
+    VBox mainLayout = new VBox(20, labelBox, buttonsBox, actionButtonsBox, queueBox, currentInstructionLabel);
+    mainLayout.setAlignment(Pos.CENTER);
+    mainLayout.setPadding(new Insets(20));
+    mainLayout.setStyle("-fx-background-color: #222222;");
+
+    Scene scene = new Scene(mainLayout, 700, 500);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+
+
+    instructionQueue.setOnDragDetected(event -> {
+        String selected = instructionQueue.getSelectionModel().getSelectedItem();
+        if (selected != null && !instructionSequence.isRunning()) {
+            Dragboard db = instructionQueue.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(selected);
+            db.setContent(content);
+            event.consume();
+        }
+    });
+
+    instructionQueue.setOnDragOver(event -> {
+        if (!instructionSequence.isRunning() && event.getGestureSource() != instructionQueue && event.getDragboard().hasString()) {
+            event.acceptTransferModes(TransferMode.COPY);
+        }
+        event.consume();
+    });
+
+
+
 
           instructionQueue.setCellFactory(new Callback<>() {
                @Override
@@ -252,18 +271,18 @@ public class AGVPage extends Application implements IGUIProcessingService, IInst
                if (selected != null) instructionSequence.removeInstruction(selected);
           });
 
-          ClearInstructionQueueButton.setOnAction(e ->
-                  instructionSequence.clearQueue(currentInstructionLabel)
-          );
-
-          startProductionButton.setOnAction(e ->
-                  instructionSequence.startProduction(currentInstructionLabel,
-                          startProductionButton, addInstructionSequenceButton, removeInstructionSequenceButton, ClearInstructionQueueButton)
-          );
-
-          stopProductionButton.setOnAction(e ->
-                  instructionSequence.stopProduction(startProductionButton, addInstructionSequenceButton, removeInstructionSequenceButton, ClearInstructionQueueButton)
-          );
+          clearInstructionQueueButton.setOnAction(e ->
+          instructionSequence.clearQueue(currentInstructionLabel)
+      );
+      
+      startProductionButton.setOnAction(e ->
+          instructionSequence.startProduction(currentInstructionLabel,
+                  startProductionButton, addInstructionSequenceButton, removeInstructionSequenceButton, clearInstructionQueueButton)
+      );
+      
+      stopProductionButton.setOnAction(e ->
+          instructionSequence.stopProduction(startProductionButton, addInstructionSequenceButton, removeInstructionSequenceButton, clearInstructionQueueButton)
+      );
      }
 
      @Override
