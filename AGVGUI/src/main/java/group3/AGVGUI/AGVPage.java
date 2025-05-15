@@ -109,18 +109,6 @@ public void start(Stage primaryStage) {
 
 
 
-          instructionQueue.setOnDragDropped(event -> {
-               Dragboard db = event.getDragboard();
-               if (db.hasString() && !instructionSequence.isRunning()) {
-                    instructionSequence.addInstruction(db.getString());
-                    System.out.println("Instruction added via drag-and-drop (bottom): " + db.getString());
-                    event.setDropCompleted(true);
-               } else {
-                    event.setDropCompleted(false);
-               }
-               event.consume();
-          });
-
           instructionQueue.setCellFactory(new Callback<>() {
                @Override
                public ListCell<String> call(ListView<String> listView) {

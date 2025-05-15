@@ -2,7 +2,7 @@ import group3.component.common.services.IGUIProcessingService;
 import group3.component.common.services.IInstructionGUIProcessingService;
 
 module AGVGUI {
-     requires Core;
+
      requires Common;
      requires CommonInstructionSequence;
      requires CommonAPI;

@@ -4,6 +4,7 @@ import group3.component.common.services.IGUIProcessingService;
 import group3.component.common.API.IWarehouseAPIProcessingService;
 import group3.component.common.API.Item;
 import group3.component.common.API.Warehouse;
+import group3.component.common.services.IWarehouseGUIProcessingService;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -17,7 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ServiceLoader;
 
-public class StoragePage extends Application implements IWarehouseAPIProcessingService, IGUIProcessingService {
+public class StoragePage extends Application implements IGUIProcessingService, IWarehouseGUIProcessingService {
 
     private TableView<Item> warehouseTable = new TableView<>();
     private TableView<Item> assemblerTable = new TableView<>();
@@ -26,12 +27,6 @@ public class StoragePage extends Application implements IWarehouseAPIProcessingS
 
     @Override
     public void start(Stage primaryStage) {
-
-        ServiceLoader<IWarehouseAPIProcessingService> services = ServiceLoader.load(IWarehouseAPIProcessingService.class);
-
-        for (IWarehouseAPIProcessingService service : services) {
-            ApiService = service;
-        }
 
         primaryStage.setTitle("Storage Page");
 
@@ -95,35 +90,6 @@ public class StoragePage extends Application implements IWarehouseAPIProcessingS
         table.setStyle("-fx-background-color: #444444; -fx-border-color: #555555; -fx-border-width: 2px; -fx-border-radius: 5;");
     }
 
-    @Override
-    public Warehouse getWarehouseInfo() throws IOException {
-        return ApiService.getWarehouseInfo();
-    }
-
-    public Warehouse getAssemblerInfo() throws IOException {
-        return ApiService.getWarehouseInfo();
-    }
-
-    @Override
-    public String commandAGV(String command, String location) throws IOException {
-        return ApiService.commandAGV(command, location);
-    }
-
-    @Override
-    public String pickWarehouseItem(String id) throws IOException {
-        return ApiService.pickWarehouseItem(id);
-    }
-
-    @Override
-    public String insertWarehouseItem(String id, String name) throws IOException {
-        return ApiService.insertWarehouseItem(id, name);
-    }
-
-    @Override
-    public Warehouse getWarehouseFromString(String response) {
-        return ApiService.getWarehouseFromString(response);
-    }
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -139,4 +105,12 @@ public class StoragePage extends Application implements IWarehouseAPIProcessingS
         button.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-border-radius: 5; -fx-background-radius: 5;");
         return button;
     }
+
+    @Override
+    public void initializeServices(IWarehouseAPIProcessingService apiProcessingService) {
+        ApiService = apiProcessingService;
+    }
 }
+
+}
+
