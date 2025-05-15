@@ -5,6 +5,7 @@ import group3.component.common.API.IWarehouseAPIProcessingService;
 import group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
 import group3.component.common.services.IGUIProcessingService;
 import group3.component.common.services.IInstructionGUIProcessingService;
+import group3.component.common.services.IWarehouseGUIProcessingService;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -47,7 +48,12 @@ public class Navigation extends Application {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No IInstructionSequenceProcessingService implementation found."));
 
-        IInstructionAPIProcessingService loadedAPIService = getInstructionAPIServices()
+        IInstructionAPIProcessingService loadedInstructionAPIService = getInstructionAPIServices()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No IInstructionAPIProcessingService implementation found."));
+
+        IWarehouseAPIProcessingService loadedWarehouseAPIService = getWarehouseAPIServices()
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No IInstructionAPIProcessingService implementation found."));
@@ -56,14 +62,16 @@ public class Navigation extends Application {
         for (IGUIProcessingService iGuiPlugin : getGUIServices()) {
             if (iGuiPlugin instanceof IInstructionGUIProcessingService) {
                 IInstructionGUIProcessingService instructionPlugin = (IInstructionGUIProcessingService) iGuiPlugin;
-                instructionPlugin.initializeServices(loadedInstructionService, loadedAPIService);
+                instructionPlugin.initializeServices(loadedInstructionService, loadedInstructionAPIService);
+            } else if (iGuiPlugin instanceof IWarehouseGUIProcessingService) {
+                IWarehouseGUIProcessingService instructionPlugin = (IWarehouseGUIProcessingService) iGuiPlugin;
+                instructionPlugin.initializeServices(loadedWarehouseAPIService);
             }
             insertButton(iGuiPlugin);
         }
 
         VBox layout = new VBox(20);
         layout.getChildren().addAll(buttons);
-
 
         Scene scene = new Scene(layout, 500, 500);
         primaryStage.setScene(scene);
