@@ -5,7 +5,6 @@ module AGVGUI {
 
      requires Common;
      requires CommonInstructionSequence;
-     requires CommonAPI;
      requires javafx.controls;
      exports group3.AGVGUI;
      provides IGUIProcessingService with group3.AGVGUI.AGVPage;

@@ -4,5 +4,5 @@ import group3.component.common.API.IInstructionAPIProcessingService;
 import group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
 
 public interface IInstructionGUIProcessingService {
-     void initializeServices(IInstructionSequenceProcessingService instructionService, IInstructionAPIProcessingService apiService);
+     void initializeServices(IInstructionSequenceProcessingService instructionService);
 }

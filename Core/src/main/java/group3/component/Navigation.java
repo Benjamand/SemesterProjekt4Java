@@ -59,6 +59,8 @@ public class Navigation extends Application {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No IInstructionAPIProcessingService implementation found."));
 
+        loadedInstructionService.setService(loadedInstructionAPIService);
+
         IWarehouseAPIProcessingService loadedWarehouseAPIService = getWarehouseAPIServices()
                 .stream()
                 .findFirst()
@@ -67,7 +69,7 @@ public class Navigation extends Application {
         for (IGUIProcessingService iGuiPlugin : getGUIServices()) {
             if (iGuiPlugin instanceof IInstructionGUIProcessingService) {
                 IInstructionGUIProcessingService instructionPlugin = (IInstructionGUIProcessingService) iGuiPlugin;
-                instructionPlugin.initializeServices(loadedInstructionService, loadedInstructionAPIService);
+                instructionPlugin.initializeServices(loadedInstructionService);
             } else if (iGuiPlugin instanceof IWarehouseGUIProcessingService) {
                 IWarehouseGUIProcessingService instructionPlugin = (IWarehouseGUIProcessingService) iGuiPlugin;
                 instructionPlugin.initializeServices(loadedWarehouseAPIService);
