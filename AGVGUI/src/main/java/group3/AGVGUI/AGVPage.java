@@ -166,118 +166,163 @@ public void start(Stage primaryStage) {
                }
           });
 
-          addInstructionSequenceButton.setOnAction(e -> {
-               Stage dialogStage = new Stage();
-               dialogStage.initModality(Modality.APPLICATION_MODAL);
-               dialogStage.setTitle("Add New Instruction");
+        addInstructionSequenceButton.setOnAction(e -> {
+    Stage dialogStage = new Stage();
+    dialogStage.initModality(Modality.APPLICATION_MODAL);
+    dialogStage.setTitle("Add New Instruction");
 
-               Label instructionLabel = new Label("Instruction:");
-               ComboBox<String> instructionType = new ComboBox<>();
-               instructionType.getItems().addAll("Move", "Pick up", "Put down");
-               instructionType.setValue("Move");
+    // Labels
+    Label instructionLabel = new Label("Instruction:");
+    instructionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+    ComboBox<String> instructionType = new ComboBox<>();
+    instructionType.getItems().addAll("Move", "Pick up", "Put down");
+    instructionType.setValue("Move");
+    instructionType.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
 
-               Label locationLabel = new Label("Location:");
-               ComboBox<String> locationField = new ComboBox<>();
-               locationField.getItems().addAll("Assembly Station", "Warehouse");
-               locationField.setValue("Warehouse");
 
-               Label idLabelPickUp = new Label("ID of item to pick up:");
-               Label idLabelPutDown = new Label("Slot ID to place item in:");
-               TextField idField = new TextField();
+instructionType.setButtonCell(new ListCell<>() {
+    @Override
+    protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        setText(empty || item == null ? null : item);
+        setStyle("-fx-text-fill: white; -fx-background-color: #333333;");
+    }
+});
 
-               Label itemLabel = new Label("Name of item to put down:");
-               TextField itemField = new TextField();
+instructionType.setCellFactory(listView -> new ListCell<>() {
+    @Override
+    protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        setText(empty || item == null ? null : item);
+        setStyle("-fx-text-fill: white; -fx-background-color: #333333;");
+    }
+});
+    Label locationLabel = new Label("Location:");
+    locationLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+    ComboBox<String> locationField = new ComboBox<>();
+    locationField.getItems().addAll("Assembly Station", "Warehouse");
+    locationField.setValue("Warehouse");
+    locationField.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
 
-               locationLabel.setVisible(true);
-               locationField.setVisible(true);
 
-               idLabelPickUp.setVisible(false);
-               idLabelPutDown.setVisible(false);
-               idField.setVisible(false);
+    locationField.setButtonCell(new ListCell<>() {
+    @Override
+    protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        setText(empty || item == null ? null : item);
+        setStyle("-fx-text-fill: white; -fx-background-color: #333333;");
+    }
+});
+locationField.setCellFactory(listView -> new ListCell<>() {
+    @Override
+    protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        setText(empty || item == null ? null : item);
+        setStyle("-fx-text-fill: white; -fx-background-color: #333333;");
+    }
+});
 
-               itemLabel.setVisible(false);
-               itemField.setVisible(false);
+    Label idLabelPickUp = new Label("ID of item to pick up:");
+    idLabelPickUp.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+    Label idLabelPutDown = new Label("Slot ID to place item in:");
+    idLabelPutDown.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+    TextField idField = new TextField();
+    idField.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: #555555;");
 
-               instructionType.setOnAction(event -> {
-                    idLabelPickUp.setVisible(false); idLabelPickUp.setManaged(false);
-                    idLabelPutDown.setVisible(false); idLabelPutDown.setManaged(false);
-                    idField.setVisible(false); idField.setManaged(false);
-                    itemLabel.setVisible(false); itemLabel.setManaged(false);
-                    itemField.setVisible(false); itemField.setManaged(false);
+    Label itemLabel = new Label("Name of item to put down:");
+    itemLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+    TextField itemField = new TextField();
+    itemField.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: #555555;");
 
-                    switch (instructionType.getValue()) {
-                         case "Move":
-                              break;
+    locationLabel.setVisible(true);
+    locationField.setVisible(true);
 
-                         case "Pick up":
-                              idLabelPickUp.setVisible(true); idLabelPickUp.setManaged(true);
-                              idField.setVisible(true); idField.setManaged(true);
-                              break;
+    idLabelPickUp.setVisible(false);
+    idLabelPutDown.setVisible(false);
+    idField.setVisible(false);
 
-                         case "Put down":
-                              idLabelPutDown.setVisible(true); idLabelPutDown.setManaged(true);
-                              idField.setVisible(true); idField.setManaged(true);
-                              itemLabel.setVisible(true); itemLabel.setManaged(true);
-                              itemField.setVisible(true); itemField.setManaged(true);
-                              break;
-                    }
-               });
+    itemLabel.setVisible(false);
+    itemField.setVisible(false);
 
-               Button addButton = new Button("Add");
-               Button cancelButton = new Button("Cancel");
+    instructionType.setOnAction(event -> {
+        idLabelPickUp.setVisible(false); idLabelPickUp.setManaged(false);
+        idLabelPutDown.setVisible(false); idLabelPutDown.setManaged(false);
+        idField.setVisible(false); idField.setManaged(false);
+        itemLabel.setVisible(false); itemLabel.setManaged(false);
+        itemField.setVisible(false); itemField.setManaged(false);
 
-               HBox buttons = new HBox(10, addButton, cancelButton);
-               buttons.setAlignment(Pos.CENTER_RIGHT);
-               VBox layout = new VBox(10,
-                       instructionLabel, instructionType,
-                       locationLabel, locationField,
-                       idLabelPickUp, idLabelPutDown, idField,
-                       itemLabel, itemField,
-                       buttons
-               );
+        switch (instructionType.getValue()) {
+            case "Move":
+                break;
+            case "Pick up":
+                idLabelPickUp.setVisible(true); idLabelPickUp.setManaged(true);
+                idField.setVisible(true); idField.setManaged(true);
+                break;
+            case "Put down":
+                idLabelPutDown.setVisible(true); idLabelPutDown.setManaged(true);
+                idField.setVisible(true); idField.setManaged(true);
+                itemLabel.setVisible(true); itemLabel.setManaged(true);
+                itemField.setVisible(true); itemField.setManaged(true);
+                break;
+        }
+    });
 
-               layout.setPadding(new Insets(15));
+    Button addButton = new Button("Add");
+    Button cancelButton = new Button("Cancel");
+    String dialogButtonStyle = "-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 6 16; -fx-border-radius: 5; -fx-background-radius: 5;";
+    addButton.setStyle(dialogButtonStyle);
+    cancelButton.setStyle(dialogButtonStyle);
 
-               Scene dialogScene = new Scene(layout, 400, 400);
-               dialogStage.setScene(dialogScene);
-               dialogStage.show();
+    HBox buttons = new HBox(10, addButton, cancelButton);
+    buttons.setAlignment(Pos.CENTER_RIGHT);
 
-               addButton.setOnAction(event -> {
-                    String instruction = instructionType.getValue();
-                    String location = locationField.getValue();
-                    String fullInstruction = "";
+    VBox layout = new VBox(10,
+            instructionLabel, instructionType,
+            locationLabel, locationField,
+            idLabelPickUp, idLabelPutDown, idField,
+            itemLabel, itemField,
+            buttons
+    );
+    layout.setPadding(new Insets(15));
+    layout.setStyle("-fx-background-color: #222222;");
 
-                    switch (instruction) {
-                         case "Move":
-                              fullInstruction = "Move to " + location;
-                              break;
+    Scene dialogScene = new Scene(layout, 400, 400);
+    dialogStage.setScene(dialogScene);
+    dialogStage.show();
 
-                         case "Pick up":
-                              String pickupId = idField.getText().trim();
-                              if (pickupId.isEmpty()) {
-                                   showAlert("ID missing", "You must enter the ID of an item.");
-                                   return;
-                              }
-                              fullInstruction = "Pick up id: " + pickupId + " at " + location;
-                              break;
+    addButton.setOnAction(event -> {
+        String instruction = instructionType.getValue();
+        String location = locationField.getValue();
+        String fullInstruction = "";
 
-                         case "Put down":
-                              String putDownId = idField.getText().trim();
-                              String itemName = itemField.getText().trim();
-                              if (putDownId.isEmpty() || itemName.isEmpty()) {
-                                   showAlert("Missing Information", "You must enter the ID for a slot and the name of the item.");
-                                   return;
-                              }
-                              fullInstruction = "Put down " + itemName + " into id: " + putDownId + " at " + location;
-                              break;
-                    }
+        switch (instruction) {
+            case "Move":
+                fullInstruction = "Move to " + location;
+                break;
+            case "Pick up":
+                String pickupId = idField.getText().trim();
+                if (pickupId.isEmpty()) {
+                    showAlert("ID missing", "You must enter the ID of an item.");
+                    return;
+                }
+                fullInstruction = "Pick up id: " + pickupId + " at " + location;
+                break;
+            case "Put down":
+                String putDownId = idField.getText().trim();
+                String itemName = itemField.getText().trim();
+                if (putDownId.isEmpty() || itemName.isEmpty()) {
+                    showAlert("Missing Information", "You must enter the ID for a slot and the name of the item.");
+                    return;
+                }
+                fullInstruction = "Put down " + itemName + " into id: " + putDownId + " at " + location;
+                break;
+        }
 
-                    instructionSequence.addInstruction(fullInstruction);
-                    dialogStage.close();
-               });
-               cancelButton.setOnAction(event -> dialogStage.close());
-          });
-
+        instructionSequence.addInstruction(fullInstruction);
+        dialogStage.close();
+    });
+    cancelButton.setOnAction(event -> dialogStage.close());
+});
           removeInstructionSequenceButton.setOnAction(e -> {
                String selected = instructionQueue.getSelectionModel().getSelectedItem();
                if (selected != null) instructionSequence.removeInstruction(selected);
