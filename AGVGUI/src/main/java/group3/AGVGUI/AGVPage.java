@@ -1,6 +1,5 @@
 package group3.AGVGUI;
 
-import group3.component.common.API.IInstructionAPIProcessingService;
 import group3.component.common.InstructionSequence.IInstructionSequenceProcessingService;
 import group3.component.common.services.IGUIProcessingService;
 import group3.component.common.services.IInstructionGUIProcessingService;
@@ -108,18 +107,6 @@ public void start(Stage primaryStage) {
 
 
 
-
-          instructionQueue.setOnDragDropped(event -> {
-               Dragboard db = event.getDragboard();
-               if (db.hasString() && !instructionSequence.isRunning()) {
-                    instructionSequence.addInstruction(db.getString());
-                    System.out.println("Instruction added via drag-and-drop (bottom): " + db.getString());
-                    event.setDropCompleted(true);
-               } else {
-                    event.setDropCompleted(false);
-               }
-               event.consume();
-          });
 
           instructionQueue.setCellFactory(new Callback<>() {
                @Override
@@ -361,9 +348,8 @@ locationField.setCellFactory(listView -> new ListCell<>() {
      }
 
      @Override
-     public void initializeServices(IInstructionSequenceProcessingService instructionService, IInstructionAPIProcessingService apiService) {
+     public void initializeServices(IInstructionSequenceProcessingService instructionService) {
           instructionSequence = instructionService;
-          instructionSequence.setService(apiService);
      }
 
 }

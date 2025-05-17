@@ -2,10 +2,9 @@ import group3.component.common.services.IGUIProcessingService;
 import group3.component.common.services.IInstructionGUIProcessingService;
 
 module AGVGUI {
-     requires Core;
+
      requires Common;
      requires CommonInstructionSequence;
-     requires CommonAPI;
      requires javafx.controls;
      exports group3.AGVGUI;
      provides IGUIProcessingService with group3.AGVGUI.AGVPage;
