@@ -11,4 +11,20 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>CommonInstructionSequence</name>
+    <dependencies>
+        <dependency>
+            <groupId>group3.component.common.api</groupId>
+            <artifactId>CommonAPI</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+        </dependency>
+    </dependencies>
 </project>
