@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import group3.component.common.API.AssemblyRecipe;
-import group3.component.common.API.IWarehouseAPIProcessingService;
-import group3.component.common.API.Item;
-import group3.component.common.API.Warehouse;
+import group3.component.common.API.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class App implements IWarehouseAPIProcessingService {
+public class App implements IWarehouseAPIProcessingService, IInstructionAPIProcessingService {
 
     String baseUrl = "http://127.0.0.1:8000";
 

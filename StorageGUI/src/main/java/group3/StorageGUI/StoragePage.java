@@ -87,13 +87,6 @@ public class StoragePage extends Application implements IGUIProcessingService, I
         HBox buttonBox = new HBox(10, refreshButton, closeButton);
         buttonBox.setAlignment(Pos.CENTER);
 
-
-        VBox layout = new VBox(15, titleLabel, subtitleLabel, warehouseLabel, warehouseTable, assemblerLabel, assemblerTable, buttonBox);
-        layout.setPadding(new Insets(20));
-        layout.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(layout, 800, 600);
-
         primaryStage.setScene(scene);
         primaryStage.show();
     }
