@@ -15,8 +15,32 @@ public class AssemblyRecipe {
         this.description = description;
         this.ingredients = ingredients;
     }
+
+    public String getProductionName() {
+        return productionName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<String> getIngredients() {
+        return ingredients;
+    }
+
+    public int getIngredientCount() {
+        return ingredients != null ? ingredients.size() : 0;
+    }
+
     @Override
     public String toString() {
-        return "[Name: " + name + ", description: " + description + ", amount of ingredients: " + ingredients.size() + ", production name: " + productionName + "]";
+        return "[Name: " + name +
+                ", description: " + description +
+                ", amount of ingredients: " + getIngredientCount() +
+                ", production name: " + productionName + "]";
     }
 }
