@@ -1,3 +1,5 @@
 module CommonInstructionSequence {
-    exports group3.component.common.InstructionSequence;
+     requires CommonAPI;
+     requires javafx.controls;
+     exports group3.component.common.InstructionSequence;
 }
