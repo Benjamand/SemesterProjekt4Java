@@ -87,7 +87,7 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
         isRunning.set(true);
         for (Button b : buttonsToDisable) b.setDisable(true);
 
-        productionTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        productionTimeline = new Timeline(new KeyFrame(Duration.seconds(8), event -> {
             if (!queue.isEmpty()) {
                 String instruction = queue.get(currentIndex.get());
                 System.out.println("Executing instruction: " + instruction);
@@ -117,6 +117,7 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
     // Process each instruction and execute corresponding API commands
     private void processInstruction(String instruction, Label currentInstructionLabel) throws IOException {
         try {
+            System.out.println(instruction);
             String lowerInstruction = instruction.toLowerCase();
             String command = null;
             String location = null;

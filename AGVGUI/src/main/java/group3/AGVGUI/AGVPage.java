@@ -18,6 +18,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class AGVPage extends Application implements IGUIProcessingService, IInstructionGUIProcessingService {
 
     private IInstructionSequenceProcessingService instructionSequence;
@@ -184,13 +187,17 @@ instructionType.setCellFactory(listView -> new ListCell<>() {
         setStyle("-fx-text-fill: white; -fx-background-color: #333333;");
     }
 });
-    Label locationLabel = new Label("Location:");
-    locationLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
-    ComboBox<String> locationField = new ComboBox<>();
-    locationField.getItems().addAll("Assembly", "Storage");
-    locationField.setValue("Storage");
-    locationField.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
+             Label locationLabel = new Label("Location:");
+             locationLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
 
+             Map<String, String> locationMap = new LinkedHashMap<>();
+             locationMap.put("Assembly Station", "assembly");
+             locationMap.put("Warehouse", "storage");
+
+             ComboBox<String> locationField = new ComboBox<>();
+             locationField.getItems().addAll(locationMap.keySet());
+             locationField.setValue("Warehouse"); // Default value
+             locationField.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
 
     locationField.setButtonCell(new ListCell<>() {
     @Override
@@ -278,32 +285,33 @@ locationField.setCellFactory(listView -> new ListCell<>() {
     dialogStage.show();
 
     addButton.setOnAction(event -> {
-        String instruction = instructionType.getValue();
-        String location = locationField.getValue();
-        String fullInstruction = "";
+         String instruction = instructionType.getValue();
+         String locationDisplay = locationField.getValue();
+         String location = locationMap.get(locationDisplay);
+         String fullInstruction = "";
 
-        switch (instruction) {
-            case "Move":
-                fullInstruction = "Move to " + location;
-                break;
-            case "Pick up":
-                String pickupId = idField.getText().trim();
-                if (pickupId.isEmpty()) {
-                    showAlert("ID missing", "You must enter the ID of an item.");
-                    return;
-                }
-                fullInstruction = "Pick up id: " + pickupId + " at " + location;
-                break;
-            case "Put down":
-                String putDownId = idField.getText().trim();
-                String itemName = itemField.getText().trim();
-                if (putDownId.isEmpty() || itemName.isEmpty()) {
-                    showAlert("Missing Information", "You must enter the ID for a slot and the name of the item.");
-                    return;
-                }
-                fullInstruction = "Put down " + itemName + " into id: " + putDownId + " at " + location;
-                break;
-        }
+         switch (instruction) {
+              case "Move":
+                   fullInstruction = "Move to " + location;
+                   break;
+              case "Pick up":
+                   String pickupId = idField.getText().trim();
+                   if (pickupId.isEmpty()) {
+                        showAlert("ID missing", "You must enter the ID of an item.");
+                        return;
+                   }
+                   fullInstruction = "Pick up id: " + pickupId + " at " + location;
+                   break;
+              case "Put down":
+                   String putDownId = idField.getText().trim();
+                   String itemName = itemField.getText().trim();
+                   if (putDownId.isEmpty() || itemName.isEmpty()) {
+                        showAlert("Missing Information", "You must enter the ID for a slot and the name of the item.");
+                        return;
+                   }
+                   fullInstruction = "Put down " + itemName + " into id: " + putDownId + " at " + location;
+                   break;
+         }
 
         instructionSequence.addInstruction(fullInstruction);
         dialogStage.close();
