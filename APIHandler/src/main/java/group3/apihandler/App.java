@@ -28,13 +28,30 @@ public class App implements IWarehouseAPIProcessingService, IInstructionAPIProce
         //System.out.println(appInstance.commandAGV("move", "assembly"));
         //System.out.println(appInstance.getAssemblyRecipes());
         //System.out.println(appInstance.getAssemblyInventory());
-        System.out.println(appInstance.commandAssembly("2", "simple_drone"));
+        //System.out.println(appInstance.commandAssembly("2", "simple_drone"));
+        System.out.println(appInstance.getWarehouseInfo());
+        //System.out.println(appInstance.pickWarehouseItem("3"));
+        //System.out.println(appInstance.commandAGV("move", "warehouse"));
+        //System.out.println(appInstance.commandAGV("pick", "warehouse", "3"));
+        //System.out.println(appInstance.commandAGV("move", "assembly"));
+        //System.out.println(appInstance.commandAGV("put", "assembly", "3"));
+        //System.out.println(appInstance.getAssemblyInventory());
     }
 
     public String commandAGV(String command, String location) throws IOException {
+        return commandAGV(command, location, null);
+    }
+
+    public String commandAGV(String command, String location, String id) throws IOException {
         URL url = new URL(baseUrl + "/agv/");
 
-        String body = "{\"command\": " + "\"" + command + "\", \"location\":" + "\"" + location + "\"}";
+        String body = "";
+        if (id != null) {
+            body = "{\"command\": \"" + command + "\", \"location\": \"" + location + "\", \"id\": \"" + id + "\"}";
+        } else {
+            body = "{\"command\": \"" + command + "\", \"location\": \"" + location + "\"}";
+        }
+
 
         return getString(url, body);
     }
@@ -150,7 +167,6 @@ public class App implements IWarehouseAPIProcessingService, IInstructionAPIProce
         return getString(url, body);
     }
 
-    @Override
     public List<String> getAssemblyInventory() throws IOException {
         URL url = new URL(baseUrl + "/assembly/inventory");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
