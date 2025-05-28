@@ -15,6 +15,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +45,13 @@ public class StoragePage extends Application implements IGUIProcessingService, I
             assemblerTableInitialized = true;
         }
 
-        refreshData(); // Always fresh data
+        refreshData();
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), event -> refreshData())
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         VBox layout = new VBox(20,
                 createStyledLabel("Storage Page", 25, true),

@@ -187,8 +187,8 @@ instructionType.setCellFactory(listView -> new ListCell<>() {
     Label locationLabel = new Label("Location:");
     locationLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
     ComboBox<String> locationField = new ComboBox<>();
-    locationField.getItems().addAll("Assembly Station", "Warehouse");
-    locationField.setValue("Warehouse");
+    locationField.getItems().addAll("Assembly", "Storage");
+    locationField.setValue("Storage");
     locationField.setStyle("-fx-background-color: #333333; -fx-text-fill: white;");
 
 

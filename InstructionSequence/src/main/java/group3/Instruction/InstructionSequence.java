@@ -15,6 +15,8 @@ import javafx.scene.control.Label;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class InstructionSequence implements IInstructionSequenceProcessingService {
 
@@ -114,33 +116,56 @@ public class InstructionSequence implements IInstructionSequenceProcessingServic
 
     // Process each instruction and execute corresponding API commands
     private void processInstruction(String instruction, Label currentInstructionLabel) throws IOException {
-        if (instruction.startsWith("Move to")) {
-            String location = instruction.replace("Move to ", "").trim();
-            apiService.commandAGV("move", location);
-            currentInstructionLabel.setText("Executing Move: " + location);
+        try {
+            String lowerInstruction = instruction.toLowerCase();
+            String command = null;
+            String location = null;
+            String id = null;
 
-        } else if (instruction.startsWith("Pick up id:")) {
-            String[] parts = instruction.replace("Pick up id:", "").split("at");
-            String id = parts[0].trim();
-            String location = parts[1].trim();
+            if (lowerInstruction.startsWith("move to")) {
+                command = "move";
+                location = instruction.substring("Move to ".length()).trim();
 
-            apiService.commandAGV("move", location);
-            apiService.pickWarehouseItem(id);
-            currentInstructionLabel.setText("Executing Pick up: " + id + " at " + location);
+            } else if (lowerInstruction.startsWith("pick up id:")) {
+                command = "pick";
+                int atIndex = instruction.toLowerCase().indexOf(" at ");
+                if (atIndex == -1) throw new IllegalArgumentException("Invalid pick up instruction format.");
 
-        } else if (instruction.startsWith("Put down")) {
-            String afterPut = instruction.replace("Put down ", "");
-            String[] parts = afterPut.split("into id:|at");
-            String itemName = parts[0].trim();
-            String id = parts[1].trim();
-            String location = parts[2].trim();
+                id = instruction.substring("Pick up id: ".length(), atIndex).trim();
+                location = instruction.substring(atIndex + 4).trim();
 
-            apiService.commandAGV("move", location);
-            apiService.insertWarehouseItem(id, itemName);
-            currentInstructionLabel.setText("Executing Put down: " + itemName + " into " + id + " at " + location);
+            } else if (lowerInstruction.startsWith("put down")) {
+                command = "put";
+                int intoIndex = instruction.toLowerCase().indexOf(" into id:");
+                int atIndex = instruction.toLowerCase().indexOf(" at ");
 
-        } else {
-            currentInstructionLabel.setText("Unknown instruction format.");
+                if (intoIndex == -1 || atIndex == -1) {
+                    throw new IllegalArgumentException("Invalid put down instruction format.");
+                }
+
+                id = instruction.substring(intoIndex + " into id:".length(), atIndex).trim();
+                location = instruction.substring(atIndex + " at ".length()).trim();
+            }
+
+            if (command == null || location == null) {
+                throw new IllegalArgumentException("Unable to parse instruction.");
+            }
+
+            String normalizedLocation = location.toLowerCase();
+
+            String response;
+            if (id != null) {
+                response = apiService.commandAGV(command, normalizedLocation, id);
+            } else {
+                response = apiService.commandAGV(command, normalizedLocation);
+            }
+
+            System.out.println("AGV response: " + response);
+
+        } catch (Exception e) {
+            System.err.println("Error processing instruction: " + instruction);
+            e.printStackTrace();
         }
     }
+
 }

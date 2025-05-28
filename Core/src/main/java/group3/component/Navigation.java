@@ -39,7 +39,6 @@ public class Navigation extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Navigation Page");
 
-    
         Button exitButton = new Button("X");
         exitButton.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 22px;");
         exitButton.setOnAction(e -> primaryStage.close());
@@ -77,13 +76,11 @@ public class Navigation extends Application {
             insertButton(iGuiPlugin);
         }
 
-       
         for (Button button : buttons) {
             button.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-border-radius: 5; -fx-background-radius: 5;");
         }
 
         VBox buttonLayout = new VBox(10);
-
        
         Label instructionLabel = new Label("Choose a page to navigate to");
         instructionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 0 0 10 0;");
