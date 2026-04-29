@@ -34,7 +34,7 @@ public class StoragePage extends Application implements IGUIProcessingService, I
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Storage Page");
-
+        //Setup tabeller
         if (!warehouseTableInitialized) {
             setupItemTable();
             warehouseTableInitialized = true;
@@ -45,8 +45,10 @@ public class StoragePage extends Application implements IGUIProcessingService, I
             assemblerTableInitialized = true;
         }
 
+        //Henter data
         refreshData();
 
+        //Timer, opdaterer data hvert sekund
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> refreshData())
         );
@@ -78,7 +80,10 @@ public class StoragePage extends Application implements IGUIProcessingService, I
         }
 
         try {
+            //Henter Warehouse-data
             Warehouse warehouse = apiService.getWarehouseInfo();
+
+            //Opdatere tabeller med data fra Warehouse-objektet
             warehouseTable.getItems().setAll(warehouse.getItems());
         } catch (IOException e) {
             System.err.println("Failed to load warehouse info:");
