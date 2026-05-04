@@ -22,20 +22,8 @@ public class App implements IWarehouseAPIProcessingService, IInstructionAPIProce
 
     public static void main(String[] args) throws IOException {
         App appInstance = new App();
-        //System.out.println(appInstance.getWarehouseInfo());
-        //System.out.println(appInstance.pickWarehouseItem("3"));
-        //System.out.println(appInstance.insertWarehouseItem("1337", "Stuff"));
-        //System.out.println(appInstance.commandAGV("move", "assembly"));
-        //System.out.println(appInstance.getAssemblyRecipes());
-        //System.out.println(appInstance.getAssemblyInventory());
-        //System.out.println(appInstance.commandAssembly("2", "simple_drone"));
+
         System.out.println(appInstance.getWarehouseInfo());
-        //System.out.println(appInstance.pickWarehouseItem("3"));
-        //System.out.println(appInstance.commandAGV("move", "warehouse"));
-        //System.out.println(appInstance.commandAGV("pick", "warehouse", "3"));
-        //System.out.println(appInstance.commandAGV("move", "assembly"));
-        //System.out.println(appInstance.commandAGV("put", "assembly", "3"));
-        //System.out.println(appInstance.getAssemblyInventory());
     }
 
     public String commandAGV(String command, String location) throws IOException {
@@ -51,8 +39,6 @@ public class App implements IWarehouseAPIProcessingService, IInstructionAPIProce
         } else {
             body = "{\"command\": \"" + command + "\", \"location\": \"" + location + "\"}";
         }
-
-
         return getString(url, body);
     }
 
@@ -109,6 +95,7 @@ public class App implements IWarehouseAPIProcessingService, IInstructionAPIProce
         }
     }
 
+    //Henter Warehouse info via REST API
     public Warehouse getWarehouseInfo() throws IOException {
         URL url = new URL(baseUrl + "/warehouse/inventory");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -128,6 +115,8 @@ public class App implements IWarehouseAPIProcessingService, IInstructionAPIProce
             in.close();
 
             System.out.println(response.toString());
+
+            //Parser JSON-strengen til et Warehouse-objekt
             warehouse = getWarehouseFromString(response.toString());
         }
 
